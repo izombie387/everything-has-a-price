@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://ctq87qlhkn6hy"]
+
+[ext_resource type="Script" uid="uid://cmf3vyrpqeesr" path="res://temp/outline_shader_test.gd" id="1_c51fk"]
+[ext_resource type="PackedScene" uid="uid://df1tia165yy5g" path="res://temp/rag_doll_smooth.tscn" id="2_c51fk"]
+[ext_resource type="MeshLibrary" uid="uid://brmn5dotrdlv3" path="res://temp/mesh-lib.tres" id="3_c51fk"]
+
+[node name="Outline-Shader-Test" type="Node3D"]
+script = ExtResource("1_c51fk")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.0086848)
+
+[node name="rag-doll-smooth" parent="." instance=ExtResource("2_c51fk")]
+
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = ExtResource("3_c51fk")
+data = {
+"cells": PackedInt32Array(1, 3, 1, 0, 3, 1, 65535, 3, 1, 65535, 2, 0, 0, 2, 0, 1, 2, 0)
+}

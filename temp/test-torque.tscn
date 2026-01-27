@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://bnmnva8sdrcje"]
+
+[ext_resource type="Script" uid="uid://3l4qngwvbvdj" path="res://temp/torque-test.gd" id="1_m1i86"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nfd2j"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_nfd2j"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+gravity_scale = 0.0
+script = ExtResource("1_m1i86")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("BoxShape3D_nfd2j")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+mesh = SubResource("BoxMesh_nfd2j")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.1083612)

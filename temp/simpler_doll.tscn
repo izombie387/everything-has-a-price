@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://dn4xcx7mtaljp"]
+
+[ext_resource type="PackedScene" uid="uid://d0j0fk7jlpxa7" path="res://temp/simpler-doll.glb" id="1_70mwu"]
+[ext_resource type="Material" uid="uid://3nmnvgifvl0q" path="res://temp/outline-shader-mat.tres" id="2_2rq0r"]
+
+[node name="simpler-doll" instance=ExtResource("1_70mwu")]
+
+[node name="Arms" parent="Armature/Skeleton3D" index="0"]
+surface_material_override/0 = ExtResource("2_2rq0r")
+
+[node name="Dress" parent="Armature/Skeleton3D" index="1"]
+surface_material_override/0 = ExtResource("2_2rq0r")
+
+[node name="Head" parent="Armature/Skeleton3D" index="2"]
+surface_material_override/0 = ExtResource("2_2rq0r")
+
+[node name="Legs" parent="Armature/Skeleton3D" index="3"]
+surface_material_override/0 = ExtResource("2_2rq0r")
+
+[node name="Torso" parent="Armature/Skeleton3D" index="4"]
+surface_material_override/0 = ExtResource("2_2rq0r")

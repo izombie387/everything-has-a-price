@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://df1tia165yy5g"]
+
+[ext_resource type="PackedScene" uid="uid://b4pms14y021ft" path="res://temp/rag-doll-smooth.glb" id="1_8tdqw"]
+[ext_resource type="Material" uid="uid://3nmnvgifvl0q" path="res://temp/outline-shader-mat.tres" id="2_6svy6"]
+
+[node name="rag-doll-smooth" instance=ExtResource("1_8tdqw")]
+
+[node name="Arms" parent="Armature/Skeleton3D" index="0"]
+surface_material_override/0 = ExtResource("2_6svy6")
+
+[node name="Dress" parent="Armature/Skeleton3D" index="1"]
+surface_material_override/0 = ExtResource("2_6svy6")
+
+[node name="Head" parent="Armature/Skeleton3D" index="2"]
+surface_material_override/0 = ExtResource("2_6svy6")
+
+[node name="Legs" parent="Armature/Skeleton3D" index="3"]
+surface_material_override/0 = ExtResource("2_6svy6")
+
+[node name="Torso" parent="Armature/Skeleton3D" index="4"]
+surface_material_override/0 = ExtResource("2_6svy6")

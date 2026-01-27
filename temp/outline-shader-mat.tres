@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://3nmnvgifvl0q"]
+
+[ext_resource type="Shader" uid="uid://ccd8qsawp7j5o" path="res://temp/outline-shader.gdshader" id="1_rrk7o"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_rrk7o")
+shader_parameter/thresh = 0.5
+shader_parameter/t1 = 1.0
+shader_parameter/t2 = 0.05

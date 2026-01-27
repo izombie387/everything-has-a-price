@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://d0x85ofadoer5"]
+
+[ext_resource type="Shader" uid="uid://cfn1pht2pqti4" path="res://temp/light-test.gdshader" id="1_1rv6m"]
+
+[resource]
+shader = ExtResource("1_1rv6m")
+shader_parameter/color = Color(0.41568628, 0.61960787, 1, 1)
+shader_parameter/angle = 79.18800376143
+shader_parameter/len = 129.6230061570925
+shader_parameter/fade_margin = 28.00000133
