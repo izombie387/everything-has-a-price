@@ -4,15 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://btss4kubs2qm" path="res://sell_everything/item_collection.tscn" id="2_mrwjb"]
 
 [node name="Game" type="MarginContainer" unique_id=331056395]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -159.0
-offset_top = -57.0
-offset_right = 159.0
-offset_bottom = 57.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -25,23 +19,36 @@ script = ExtResource("1_663aa")
 
 [node name="Rows" type="VBoxContainer" parent="." unique_id=1733232330]
 layout_mode = 2
-size_flags_horizontal = 4
 theme_override_constants/separation = 2
+
+[node name="Top" type="Control" parent="Rows" unique_id=352356026]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.2
 
 [node name="Sections" type="HBoxContainer" parent="Rows" unique_id=1891369125]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/separation = 12
+size_flags_vertical = 3
+theme_override_constants/separation = 8
 
 [node name="Player" parent="Rows/Sections" unique_id=856734325 instance=ExtResource("2_mrwjb")]
 layout_mode = 2
+size_flags_vertical = 1
 
 [node name="Enemy" parent="Rows/Sections" unique_id=46042771 instance=ExtResource("2_mrwjb")]
 visible = false
 layout_mode = 2
+size_flags_vertical = 1
 flipped = true
 
 [node name="Shop" parent="Rows/Sections" unique_id=1500354198 instance=ExtResource("2_mrwjb")]
 layout_mode = 2
+size_flags_vertical = 1
 flipped = true
+
+[node name="Bottom" type="Control" parent="Rows" unique_id=1535173478]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.2

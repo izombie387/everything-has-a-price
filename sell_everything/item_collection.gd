@@ -6,7 +6,7 @@ extends VBoxContainer
 	"items": $Stuff/Items,
 	"actions": $Actions,
 }
-@export var character: Panel
+@export var character: PanelContainer
 @export var flipped: = false:
 	set(v):
 		flipped = v

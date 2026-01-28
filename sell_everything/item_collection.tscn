@@ -5,45 +5,57 @@
 
 [node name="ItemCollection" type="VBoxContainer" unique_id=856734325 node_paths=PackedStringArray("character")]
 custom_minimum_size = Vector2(28, 28)
-offset_right = 133.0
-offset_bottom = 102.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/separation = 2
 script = ExtResource("1_h7a26")
 character = NodePath("Stuff/Characters/1")
+metadata/_edit_lock_ = true
 
 [node name="Hud" type="HBoxContainer" parent="." unique_id=673922519]
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/separation = 2
 metadata/_edit_lock_ = true
 
 [node name="1" parent="Hud" unique_id=1142808129 instance=ExtResource("1_j1vvg")]
 custom_minimum_size = Vector2(43, 20)
 layout_mode = 2
+size_flags_vertical = 1
 
 [node name="2" parent="Hud" unique_id=470655955 instance=ExtResource("1_j1vvg")]
 custom_minimum_size = Vector2(43, 20)
 layout_mode = 2
+size_flags_vertical = 1
 
 [node name="3" parent="Hud" unique_id=510622111 instance=ExtResource("1_j1vvg")]
 custom_minimum_size = Vector2(43, 20)
 layout_mode = 2
+size_flags_vertical = 1
 
 [node name="Stuff" type="HBoxContainer" parent="." unique_id=1072277403]
 layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
 theme_override_constants/separation = 2
 metadata/_edit_lock_ = true
 
 [node name="Characters" type="GridContainer" parent="Stuff" unique_id=43506974]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="1" parent="Stuff/Characters" unique_id=818525441 instance=ExtResource("1_j1vvg")]
-custom_minimum_size = Vector2(49, 32)
 layout_mode = 2
 
 [node name="Items" type="GridContainer" parent="Stuff" unique_id=1342277997]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
 theme_override_constants/h_separation = 2
 theme_override_constants/v_separation = 2
 columns = 3
@@ -69,17 +81,21 @@ layout_mode = 2
 
 [node name="Actions" type="HBoxContainer" parent="." unique_id=321875239]
 layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/separation = 2
 metadata/_edit_lock_ = true
 
 [node name="1" parent="Actions" unique_id=781303698 instance=ExtResource("1_j1vvg")]
 custom_minimum_size = Vector2(43, 20)
 layout_mode = 2
+size_flags_vertical = 1
 
 [node name="2" parent="Actions" unique_id=1972974522 instance=ExtResource("1_j1vvg")]
 custom_minimum_size = Vector2(43, 20)
 layout_mode = 2
+size_flags_vertical = 1
 
 [node name="3" parent="Actions" unique_id=878595744 instance=ExtResource("1_j1vvg")]
 custom_minimum_size = Vector2(43, 20)
 layout_mode = 2
+size_flags_vertical = 1

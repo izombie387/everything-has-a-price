@@ -1,4 +1,4 @@
-extends Panel
+extends PanelContainer
 class_name Slot
 
 var user: = ""
@@ -9,6 +9,8 @@ var item_node = null
 
 
 func _ready() -> void:
+	is_node_ready()
+	print(name)
 	var user_name = owner.name
 	var parent_name = get_parent().name
 	assert(user_name != "ItemCollection")
@@ -88,7 +90,9 @@ func set_item(new_item_name: String):
 			new_node.max_value = value
 			new_node.value = value
 			new_node.step = 1.0
-	new_node.anchors_preset = PRESET_CENTER
+	new_node.anchors_preset = PRESET_FULL_RECT
+	new_node.size_flags_horizontal = SIZE_EXPAND_FILL
+	new_node.size_flags_vertical = SIZE_EXPAND_FILL
 	add_child(new_node)
 	item_node = new_node
 			
