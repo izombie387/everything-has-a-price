@@ -1,6 +1,11 @@
 @tool
 extends VBoxContainer
-
+@onready var groups = {
+	"hud": $Hud,
+	"characters": $Stuff/Characters,
+	"items": $Stuff/Items,
+	"actions": $Actions,
+}
 @export var character: Panel
 @export var flipped: = false:
 	set(v):
@@ -11,5 +16,13 @@ extends VBoxContainer
 			$Stuff.move_child(character, 0)
 		
 
-func add_item(item_name: String):
-	$"Stuff/Items/1".set_item(item_name)
+func add_item(
+		item_name: String,
+		group: String,
+		index: int,
+):
+	var slot = groups[group].get_children()[index]
+	if is_instance_valid(slot.item_node):
+		print("need to free")
+		slot.clear_item()
+	slot.set_item(item_name)
