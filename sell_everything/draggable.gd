@@ -1,16 +1,16 @@
 extends PanelContainer
 class_name Slot
 
+enum Phase {STEAL, FIGHT}
 var user: = ""
 var type: = ""
 var index: = -1
 var item_name = null
 var item_node = null
+var phase: = Phase.STEAL
 
 
 func _ready() -> void:
-	is_node_ready()
-	print(name)
 	var user_name = owner.name
 	var parent_name = get_parent().name
 	assert(user_name != "ItemCollection")
@@ -20,9 +20,7 @@ func _ready() -> void:
 	
 	
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	if item_name == null:
-		return
-	if user == "enemy":
+	if not is_instance_valid(item_node):
 		return
 	var preview = ColorRect.new()
 	preview.size = size/2.0
@@ -33,66 +31,80 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 		"slot": self,
 		"on_dropped": on_dropped,
 	}
+
 	
-	
-func info():
-	return "\n".join([
-		"---",
-		"user", user,
-		"type", type,
-		"index", index,
-		"item_name", item_name,
-		"item_node", item_node.name if item_node else "null"
-	])
-	
-	
-func on_dropped():
-	clear_item()
-	
+# Dropping here
+func _drop_data(_at_position: Vector2, data: Variant) -> void:
+	var incoming = data["slot"]
+	var swap = null
+	if is_instance_valid(item_node):
+		if incoming.user == "player":
+			swap = item_name
+		clear_item()
+	print(data["slot"].info())
+	set_item(data["slot"].item_name)
+	data["on_dropped"].call(swap)
+
+
+# Can drop here
+func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
+	var from_slot = data["slot"]
+	# Self swapping
+	if user == "player" and from_slot.user == "player" and from_slot != self:
+		return true
+	# Stealing
+	if from_slot.user == "enemy" and phase == Phase.STEAL:
+		return user == "player"
+	return false
+
+# I was dropped elsewhere
+func on_dropped(swap_item):
+	print("setting: ", swap_item)
+	if is_instance_valid(item_node):
+		clear_item()
+	if swap_item:
+		set_item(swap_item)
+
 
 func clear_item():
-	item_name = null
+	print("clear item call")
 	item_node.queue_free()
-
-
-func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	var slot = data["slot"]
-	if slot == self:
-		return false
-	if slot.user == "shop":
-		return user == "player"
-	elif slot.user != user:
-		return false
-	return true
+	item_node = null
+	item_name = null
 	
 	
-func _drop_data(_at_position: Vector2, data: Variant) -> void:
-	set_item(data["slot"].item_name)
-	data["on_dropped"].call()
-
-
 func set_item(new_item_name: String):
 	item_name = new_item_name
-	var data = Data.get_item(new_item_name)
+	tooltip_text = item_name.capitalize()
+	var data = Data.get_item(item_name)
 	var node_type = data["node_type"]
-	var new_node = node_type.new()
+	var n = node_type.new()
 	match node_type:
 		TextureRect:
 			var texture = data["image"]
-			new_node.texture = texture
+			n.texture = texture
+			n.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		Label:
-			new_node.text = data["text"]
-		Button:
-			new_node.text = data["text"]
-			new_node.pressed.connect(print.bind("button pressed"))
-		ProgressBar:
-			var value = data["value"]
-			new_node.max_value = value
-			new_node.value = value
-			new_node.step = 1.0
-	new_node.anchors_preset = PRESET_FULL_RECT
-	new_node.size_flags_horizontal = SIZE_EXPAND_FILL
-	new_node.size_flags_vertical = SIZE_EXPAND_FILL
-	add_child(new_node)
-	item_node = new_node
-			
+			n.text = data["text"]
+			n.clip_text = true
+			n.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			n.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		_:
+			print("class not handled")
+	n.mouse_filter = MOUSE_FILTER_IGNORE
+	n.anchors_preset = PRESET_FULL_RECT
+	n.size_flags_horizontal = SIZE_EXPAND_FILL
+	n.size_flags_vertical = SIZE_EXPAND_FILL
+	add_child(n)
+	item_node = n
+	
+	
+func info():
+	return str(
+		"---",
+		"\nuser: ", user,
+		"\ntype: ", type,
+		"\nindex: ", index,
+		"\nitem_name: ", item_name,
+		"\nitem_node: ", item_node.name if item_node else "null"
+	)

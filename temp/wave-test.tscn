@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://c3dnndnfgwx5s"]
+
+[ext_resource type="Shader" uid="uid://dsppodi2h6y7t" path="res://temp/wave_test.gdshader" id="1_ih6qd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wms48"]
+shader = ExtResource("1_ih6qd")
+shader_parameter/speed = 2.0
+shader_parameter/frequency = 5.0
+shader_parameter/amplitude = 0.05
+
+[sub_resource type="Gradient" id="Gradient_xf5ym"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_wigpx"]
+gradient = SubResource("Gradient_xf5ym")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 0)
+
+[node name="Node2D" type="Node2D" unique_id=2064378640]
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2027496808]
+material = SubResource("ShaderMaterial_wms48")
+offset_right = 640.0
+offset_bottom = 360.0
+texture = SubResource("GradientTexture2D_wigpx")

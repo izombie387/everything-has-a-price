@@ -2,19 +2,22 @@ extends MarginContainer
 
 @onready var player: VBoxContainer = $Rows/Sections/Player
 @onready var enemy: VBoxContainer = $Rows/Sections/Enemy
-@onready var shop: VBoxContainer = $Rows/Sections/Shop
-@onready var users = [player, enemy, shop]
+@onready var users = [player, enemy]
 var c=0
+
 var group_sizes = {
 	"hud": 3,
 	"characters": 1,
 	"items": 6,
-	"actions": 3,
+	"equipment": 3,
 }
 
+
 func _ready() -> void:
-	for user in users:
-		fill_random(user)
+	print(int(KEY_A))
+	player.load_data(Data.loadouts["knight"])
+	enemy.load_data(Data.loadouts["knight"])
+
 
 func fill_random(node: Node) -> void:
 	for group in group_sizes:
@@ -29,8 +32,10 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		match event.keycode:
 			KEY_SPACE:
-				shop.add_item(
+				enemy.add_item(
 					Data.random_item_name(),
 					"items",
 					c)
 				c = (c+1)%6
+			KEY_R:
+				get_tree().reload_current_scene()

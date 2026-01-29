@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cwf1rymd6vljp"]
+
+[ext_resource type="Script" uid="uid://burxrci8tvahg" path="res://temp/color-test.gd" id="1_o7x4e"]
+[ext_resource type="Shader" uid="uid://mlxhehf758kh" path="res://temp/test-white.gdshader" id="2_sf0tn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vn0l6"]
+shader = ExtResource("2_sf0tn")
+
+[node name="Node2D" type="Node2D" unique_id=1794532852]
+script = ExtResource("1_o7x4e")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1783313191]
+modulate = Color(0.4262149, 0.42621484, 0.4262148, 1)
+material = SubResource("ShaderMaterial_vn0l6")
+use_parent_material = true
+offset_right = 408.0
+offset_bottom = 168.0
+color = Color(0.2095688, 0.38513488, 0.35750508, 1)

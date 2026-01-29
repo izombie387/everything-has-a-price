@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://1eyi5k2au07p"]
+
+[ext_resource type="Texture2D" uid="uid://dnru1bnkq0um0" path="res://sell_everything/images/knife.png" id="1_c1ryt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8s51a"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.39379084, 0.3937909, 0.39379084, 1)
+border_width_left = 4
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 4
+border_color = Color(0.5655123, 0.5655123, 0.56551224, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6kug8"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.44391775, 0.10271219, 0.09173057, 1)
+border_width_left = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqjcw"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.5175, 0.9, 0.45, 1)
+border_width_left = 4
+border_width_bottom = 2
+border_color = Color(0.12001591, 0.12001591, 0.12001591, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="Cell" type="Control" unique_id=514344857]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 128.0
+offset_bottom = 128.0
+
+[node name="Panel" type="Panel" parent="." unique_id=846505312]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8s51a")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1519328411]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer" unique_id=368259545]
+modulate = Color(1, 1, 1, 0.5764706)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_6kug8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_cqjcw")
+max_value = 10.0
+step = 1.0
+value = 8.0
+fill_mode = 3
+show_percentage = false
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer" unique_id=1177530125]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/MarginContainer" unique_id=367192546]
+layout_mode = 2
+texture = ExtResource("1_c1ryt")
+stretch_mode = 5

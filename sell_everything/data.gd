@@ -1,36 +1,71 @@
 extends RefCounted
 class_name Data
 
+const loadouts: = {
+	"knight": {
+		"items":["knife"],
+		"equipment":["shield"],
+		"hud":["hp_bar"],
+		"characters":["knight"],
+	},
+	"archer": {},
+	"theif": {},
+}
 static var items = {
 	"knife": {
 		"node_type": TextureRect,
 		"image": load("res://sell_everything/images/knife.png"),
 		"group": "items",
+		"active": ["damage", 1],
+		"cooldown": 1.0,
+		"hp": 2,
+	},
+	"shield": {
+		"node_type": TextureRect,
+		"image": load("res://sell_everything/images/shield.png"),
+		"group": "equipment",
+		"hp": 8,
+	},
+	"theiving_gloves": {
+		"node_type": TextureRect,
+		"image": load("res://sell_everything/images/theiving-gloves.png"),
+		"group": "equipment",
+		"passive": ["steals", 1],
 	},
 	"white_flag": {
 		"node_type": TextureRect,
 		"image": load("res://sell_everything/images/white-flag.png"),
 		"group": "items",
+		"hp": 5,
 	},
 	"hp_bar": {
 		"node_type": ProgressBar,
-		"value": 10,
 		"group": "hud",
+		"hp": 10,
 	},
-	"coin_counter": {
-		"node_type": Label,
-		"text": "Gold: 10",
-		"group": "hud",
-	},
-	"attack_action": {
-		"node_type": Button,
-		"text": "Attack",
-		"group": "actions",
-	},
-	"placehold_character": {
+	#"coin_counter": {
+		#"node_type": Label,
+		#"text": "Gold: 10",
+		#"group": "hud",
+	#},
+	"archer": {
 		"node_type": TextureRect,
-		"image": load("res://icon.svg"),
+		"image": load("res://sell_everything/images/archer.png"),
 		"group": "characters",
+		"active": ["attack", 2],
+		"hp": 5,
+	},
+	"knight": {
+		"node_type": TextureRect,
+		"image": load("res://sell_everything/images/knight.png"),
+		"group": "characters",
+		"hp": 10,
+	},
+	"theif": {
+		"node_type": TextureRect,
+		"image": load("res://sell_everything/images/theif.png"),
+		"group": "characters",
+		"hp": 5,
 	},
 }
 static var items_by_group = {}

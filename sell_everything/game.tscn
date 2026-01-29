@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://d335hymfxhnc6"]
+
+[ext_resource type="Script" uid="uid://bwghfw3dm46y8" path="res://sell_everything/game.gd" id="1_8uk75"]
+[ext_resource type="PackedScene" uid="uid://btss4kubs2qm" path="res://sell_everything/item_collection.tscn" id="2_104el"]
+
+[node name="Game" type="MarginContainer" unique_id=331056395]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+script = ExtResource("1_8uk75")
+
+[node name="Rows" type="VBoxContainer" parent="." unique_id=1733232330]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Guide" type="Control" parent="Rows" unique_id=352356026]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1
+
+[node name="Label" type="Label" parent="Rows/Guide" unique_id=280217040]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sections" type="HBoxContainer" parent="Rows" unique_id=1891369125]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="Player" parent="Rows/Sections" unique_id=856734325 instance=ExtResource("2_104el")]
+layout_mode = 2
+size_flags_vertical = 1
+
+[node name="Enemy" parent="Rows/Sections" unique_id=46042771 instance=ExtResource("2_104el")]
+layout_mode = 2
+size_flags_vertical = 1
+flipped = true
+
+[node name="Bottom" type="Control" parent="Rows" unique_id=1535173478]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.1

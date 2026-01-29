@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://btss4kubs2qm"]
 
 [ext_resource type="Script" uid="uid://dbby5w2lw7q12" path="res://sell_everything/item_collection.gd" id="1_h7a26"]
-[ext_resource type="PackedScene" uid="uid://b2qd87qmqbebv" path="res://sell_everything/cell.tscn" id="1_j1vvg"]
+[ext_resource type="PackedScene" uid="uid://b2qd87qmqbebv" path="res://sell_everything/slot-old.tscn" id="1_j1vvg"]
 
-[node name="ItemCollection" type="VBoxContainer" unique_id=856734325 node_paths=PackedStringArray("character")]
+[node name="ItemCollection" type="VBoxContainer" unique_id=856734325 node_paths=PackedStringArray("characters")]
 custom_minimum_size = Vector2(28, 28)
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,7 +14,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 2
 script = ExtResource("1_h7a26")
-character = NodePath("Stuff/Characters/1")
+characters = NodePath("Stuff/Characters")
 metadata/_edit_lock_ = true
 
 [node name="Hud" type="HBoxContainer" parent="." unique_id=673922519]
@@ -23,17 +23,17 @@ size_flags_vertical = 3
 theme_override_constants/separation = 2
 metadata/_edit_lock_ = true
 
-[node name="1" parent="Hud" unique_id=1142808129 instance=ExtResource("1_j1vvg")]
+[node name="0" parent="Hud" unique_id=1142808129 instance=ExtResource("1_j1vvg")]
 custom_minimum_size = Vector2(43, 20)
 layout_mode = 2
 size_flags_vertical = 1
 
-[node name="2" parent="Hud" unique_id=470655955 instance=ExtResource("1_j1vvg")]
+[node name="1" parent="Hud" unique_id=470655955 instance=ExtResource("1_j1vvg")]
 custom_minimum_size = Vector2(43, 20)
 layout_mode = 2
 size_flags_vertical = 1
 
-[node name="3" parent="Hud" unique_id=510622111 instance=ExtResource("1_j1vvg")]
+[node name="2" parent="Hud" unique_id=510622111 instance=ExtResource("1_j1vvg")]
 custom_minimum_size = Vector2(43, 20)
 layout_mode = 2
 size_flags_vertical = 1
@@ -49,7 +49,7 @@ metadata/_edit_lock_ = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="1" parent="Stuff/Characters" unique_id=818525441 instance=ExtResource("1_j1vvg")]
+[node name="0" parent="Stuff/Characters" unique_id=818525441 instance=ExtResource("1_j1vvg")]
 layout_mode = 2
 
 [node name="Items" type="GridContainer" parent="Stuff" unique_id=1342277997]
@@ -61,41 +61,42 @@ theme_override_constants/v_separation = 2
 columns = 3
 metadata/_edit_lock_ = true
 
-[node name="1" parent="Stuff/Items" unique_id=595773331 instance=ExtResource("1_j1vvg")]
+[node name="0" parent="Stuff/Items" unique_id=595773331 instance=ExtResource("1_j1vvg")]
 layout_mode = 2
 
-[node name="2" parent="Stuff/Items" unique_id=707119312 instance=ExtResource("1_j1vvg")]
+[node name="1" parent="Stuff/Items" unique_id=707119312 instance=ExtResource("1_j1vvg")]
 layout_mode = 2
 
-[node name="3" parent="Stuff/Items" unique_id=790680521 instance=ExtResource("1_j1vvg")]
+[node name="2" parent="Stuff/Items" unique_id=790680521 instance=ExtResource("1_j1vvg")]
 layout_mode = 2
 
-[node name="4" parent="Stuff/Items" unique_id=260741545 instance=ExtResource("1_j1vvg")]
+[node name="3" parent="Stuff/Items" unique_id=260741545 instance=ExtResource("1_j1vvg")]
 layout_mode = 2
 
-[node name="5" parent="Stuff/Items" unique_id=116584391 instance=ExtResource("1_j1vvg")]
+[node name="4" parent="Stuff/Items" unique_id=116584391 instance=ExtResource("1_j1vvg")]
 layout_mode = 2
 
-[node name="6" parent="Stuff/Items" unique_id=409279044 instance=ExtResource("1_j1vvg")]
+[node name="5" parent="Stuff/Items" unique_id=409279044 instance=ExtResource("1_j1vvg")]
 layout_mode = 2
 
-[node name="Actions" type="HBoxContainer" parent="." unique_id=321875239]
+[node name="Equipment" type="HBoxContainer" parent="." unique_id=321875239]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
 theme_override_constants/separation = 2
 metadata/_edit_lock_ = true
 
-[node name="1" parent="Actions" unique_id=781303698 instance=ExtResource("1_j1vvg")]
+[node name="0" parent="Equipment" unique_id=781303698 instance=ExtResource("1_j1vvg")]
 custom_minimum_size = Vector2(43, 20)
 layout_mode = 2
 size_flags_vertical = 1
 
-[node name="2" parent="Actions" unique_id=1972974522 instance=ExtResource("1_j1vvg")]
+[node name="1" parent="Equipment" unique_id=1972974522 instance=ExtResource("1_j1vvg")]
 custom_minimum_size = Vector2(43, 20)
 layout_mode = 2
 size_flags_vertical = 1
 
-[node name="3" parent="Actions" unique_id=878595744 instance=ExtResource("1_j1vvg")]
+[node name="2" parent="Equipment" unique_id=878595744 instance=ExtResource("1_j1vvg")]
 custom_minimum_size = Vector2(43, 20)
 layout_mode = 2
 size_flags_vertical = 1
