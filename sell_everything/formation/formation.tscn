@@ -22,7 +22,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(1.6364455e-06, 0.6357067, 0.58883065, 1)
 
-[node name="Ranks" type="HBoxContainer" parent="." unique_id=733142995]
+[node name="RanksContainer" type="HBoxContainer" parent="." unique_id=733142995]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,38 +30,38 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Back" type="VBoxContainer" parent="Ranks" unique_id=116682168]
+[node name="Back" type="VBoxContainer" parent="RanksContainer" unique_id=116682168]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="0" parent="Ranks/Back" unique_id=514344857 instance=ExtResource("2_271yi")]
+[node name="0" parent="RanksContainer/Back" unique_id=514344857 instance=ExtResource("2_271yi")]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Middle" type="VBoxContainer" parent="Ranks" unique_id=1472930286]
+[node name="Middle" type="VBoxContainer" parent="RanksContainer" unique_id=1472930286]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="0" parent="Ranks/Middle" unique_id=513570997 instance=ExtResource("2_271yi")]
+[node name="0" parent="RanksContainer/Middle" unique_id=513570997 instance=ExtResource("2_271yi")]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="1" parent="Ranks/Middle" unique_id=1354979753 instance=ExtResource("2_271yi")]
+[node name="1" parent="RanksContainer/Middle" unique_id=1354979753 instance=ExtResource("2_271yi")]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Front" type="VBoxContainer" parent="Ranks" unique_id=967274656]
+[node name="Front" type="VBoxContainer" parent="RanksContainer" unique_id=967274656]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="0" parent="Ranks/Front" unique_id=2006431127 instance=ExtResource("2_271yi")]
+[node name="0" parent="RanksContainer/Front" unique_id=2006431127 instance=ExtResource("2_271yi")]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="1" parent="Ranks/Front" unique_id=1153112722 instance=ExtResource("2_271yi")]
+[node name="1" parent="RanksContainer/Front" unique_id=1153112722 instance=ExtResource("2_271yi")]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="2" parent="Ranks/Front" unique_id=1161661057 instance=ExtResource("2_271yi")]
+[node name="2" parent="RanksContainer/Front" unique_id=1161661057 instance=ExtResource("2_271yi")]
 layout_mode = 2
 size_flags_vertical = 3

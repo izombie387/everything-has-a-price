@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://1eyi5k2au07p"]
 
-[ext_resource type="Texture2D" uid="uid://dnru1bnkq0um0" path="res://sell_everything/images/knife.png" id="1_c1ryt"]
+[ext_resource type="Script" uid="uid://bxrsl1gij5yf3" path="res://sell_everything/rank-and-file/cell/cell.gd" id="1_dl2hy"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8s51a"]
 content_margin_left = 0.0
@@ -49,11 +49,95 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
+[sub_resource type="Animation" id="Animation_dl2hy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MarginContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_1asqd"]
+resource_name = "attack"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(0.5, 2, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1.1402134, 1.3849107, 1.5720325, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_c1ryt"]
+resource_name = "die"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MarginContainer:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_2u4xb"]
+resource_name = "take_damage"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(0.5, 2, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1.5720325, 0.5695954, 0.5695954, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2u4xb"]
+_data = {
+&"RESET": SubResource("Animation_dl2hy"),
+&"attack": SubResource("Animation_1asqd"),
+&"die": SubResource("Animation_c1ryt"),
+&"take_damage": SubResource("Animation_2u4xb")
+}
+
 [node name="Cell" type="Control" unique_id=514344857]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 128.0
 offset_bottom = 128.0
+script = ExtResource("1_dl2hy")
 
 [node name="Panel" type="Panel" parent="." unique_id=846505312]
 layout_mode = 1
@@ -84,7 +168,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_6kug8")
 theme_override_styles/fill = SubResource("StyleBoxFlat_cqjcw")
 max_value = 10.0
 step = 1.0
-value = 8.0
+value = 10.0
 fill_mode = 3
 show_percentage = false
 
@@ -97,5 +181,7 @@ theme_override_constants/margin_bottom = 4
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/MarginContainer" unique_id=367192546]
 layout_mode = 2
-texture = ExtResource("1_c1ryt")
 stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=979429627]
+libraries/ = SubResource("AnimationLibrary_2u4xb")

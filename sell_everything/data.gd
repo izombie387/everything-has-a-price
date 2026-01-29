@@ -5,7 +5,6 @@ const loadouts: = {
 	"knight": {
 		"items":["knife"],
 		"equipment":["shield"],
-		"hud":["hp_bar"],
 		"characters":["knight"],
 	},
 	"archer": {},
@@ -13,56 +12,39 @@ const loadouts: = {
 }
 static var items = {
 	"knife": {
-		"node_type": TextureRect,
 		"image": load("res://sell_everything/images/knife.png"),
 		"group": "items",
-		"active": ["damage", 1],
+		"active": {"attack": 1},
 		"cooldown": 1.0,
 		"hp": 2,
 	},
 	"shield": {
-		"node_type": TextureRect,
 		"image": load("res://sell_everything/images/shield.png"),
 		"group": "equipment",
 		"hp": 8,
 	},
 	"theiving_gloves": {
-		"node_type": TextureRect,
 		"image": load("res://sell_everything/images/theiving-gloves.png"),
 		"group": "equipment",
-		"passive": ["steals", 1],
+		"passive": {"steals": 1},
 	},
 	"white_flag": {
-		"node_type": TextureRect,
 		"image": load("res://sell_everything/images/white-flag.png"),
 		"group": "items",
 		"hp": 5,
 	},
-	"hp_bar": {
-		"node_type": ProgressBar,
-		"group": "hud",
-		"hp": 10,
-	},
-	#"coin_counter": {
-		#"node_type": Label,
-		#"text": "Gold: 10",
-		#"group": "hud",
-	#},
 	"archer": {
-		"node_type": TextureRect,
 		"image": load("res://sell_everything/images/archer.png"),
 		"group": "characters",
-		"active": ["attack", 2],
+		"active": {"attack": 2},
 		"hp": 5,
 	},
 	"knight": {
-		"node_type": TextureRect,
 		"image": load("res://sell_everything/images/knight.png"),
 		"group": "characters",
 		"hp": 10,
 	},
 	"theif": {
-		"node_type": TextureRect,
 		"image": load("res://sell_everything/images/theif.png"),
 		"group": "characters",
 		"hp": 5,
