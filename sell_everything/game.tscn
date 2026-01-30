@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d335hymfxhnc6"]
 
-[ext_resource type="Script" uid="uid://bwghfw3dm46y8" path="res://sell_everything/game.gd" id="1_8uk75"]
+[ext_resource type="Script" uid="uid://bwghfw3dm46y8" path="res://sell_everything/old-game.gd" id="1_8uk75"]
 [ext_resource type="PackedScene" uid="uid://btss4kubs2qm" path="res://sell_everything/item_collection.tscn" id="2_104el"]
 
 [node name="Game" type="MarginContainer" unique_id=331056395]

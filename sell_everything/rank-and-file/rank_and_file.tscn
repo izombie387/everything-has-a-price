@@ -1,33 +1,32 @@
 [gd_scene format=3 uid="uid://ce1gn5o0s2jh1"]
 
-[ext_resource type="Script" uid="uid://7rundfcx6tq1" path="res://sell_everything/rank-and-file/rf-game.gd" id="1_hy1n8"]
+[ext_resource type="Script" uid="uid://7rundfcx6tq1" path="res://sell_everything/rank-and-file/game.gd" id="1_hy1n8"]
 [ext_resource type="PackedScene" uid="uid://bqfemsgkvedvs" path="res://sell_everything/formation/formation.tscn" id="1_lo6tx"]
+[ext_resource type="Script" uid="uid://ekf0oeafl32u" path="res://sell_everything/rank-and-file/debug-layer.gd" id="3_36vbh"]
 
-[node name="RankAndFile" type="Control" unique_id=119927964]
-layout_mode = 3
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hy1n8"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.41143367, 0.41143367, 0.4114336, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="RankAndFile" type="PanelContainer" unique_id=1104652568]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hy1n8")
 script = ExtResource("1_hy1n8")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1874349665]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.36171445, 0.36171448, 0.36171445, 1)
-
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1223519902]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
@@ -58,3 +57,23 @@ flipped = true
 [node name="Bottom" type="Control" parent="MarginContainer/VBoxContainer" unique_id=619654550]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="DebugLayer" type="CanvasLayer" parent="." unique_id=1258252165]
+visible = false
+script = ExtResource("3_36vbh")
+
+[node name="DebugList" type="ItemList" parent="DebugLayer" unique_id=1542292941]
+custom_minimum_size = Vector2(64, 64)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -192.0
+offset_top = -168.0
+offset_right = 192.0
+offset_bottom = 168.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="item_clicked" from="DebugLayer/DebugList" to="DebugLayer" method="_on_debug_list_item_clicked"]

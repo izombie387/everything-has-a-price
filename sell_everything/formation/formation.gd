@@ -1,6 +1,6 @@
 ## Formation
 @tool
-extends Control
+extends MarginContainer
 
 @onready var ranks_container: HBoxContainer = $RanksContainer
 @onready var back: VBoxContainer = $RanksContainer/Back

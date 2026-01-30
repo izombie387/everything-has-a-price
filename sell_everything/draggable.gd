@@ -1,5 +1,5 @@
 extends PanelContainer
-class_name Slot
+#class_name Slot
 
 enum Phase {STEAL, FIGHT}
 var user: = ""

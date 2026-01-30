@@ -2,18 +2,12 @@
 
 [ext_resource type="Script" uid="uid://bxrsl1gij5yf3" path="res://sell_everything/rank-and-file/cell/cell.gd" id="1_dl2hy"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8s51a"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c1ryt"]
 content_margin_left = 0.0
 content_margin_top = 0.0
 content_margin_right = 0.0
 content_margin_bottom = 0.0
-bg_color = Color(0.39379084, 0.3937909, 0.39379084, 1)
-border_width_left = 4
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 4
-border_color = Color(0.5655123, 0.5655123, 0.56551224, 1)
-border_blend = true
+bg_color = Color(0.35591966, 0.35591963, 0.35591963, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -75,21 +69,34 @@ tracks/1/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_1asqd"]
 resource_name = "attack"
+length = 2.0
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
+tracks/0/path = NodePath(".:self_modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.5),
-"transitions": PackedFloat32Array(0.5, 2, 1),
+"times": PackedFloat32Array(0, 0.2, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(1.1402134, 1.3849107, 1.5720325, 1), Color(1, 1, 1, 1)]
+"values": [Color(1, 1, 1, 1), Color(0.9082578, 1.423581, 2.454227, 1), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_c1ryt"]
@@ -108,8 +115,8 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_2u4xb"]
-resource_name = "take_damage"
+[sub_resource type="Animation" id="Animation_bhidw"]
+resource_name = "shine"
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -121,7 +128,24 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.5),
 "transitions": PackedFloat32Array(0.5, 2, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(1.5720325, 0.5695954, 0.5695954, 1), Color(1, 1, 1, 1)]
+"values": [Color(1, 1, 1, 1), Color(0.9074398, 1.1044812, 1.25516, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_2u4xb"]
+resource_name = "take_damage"
+length = 2.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5, 1.4),
+"transitions": PackedFloat32Array(0.5, 0.5, 2, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1.353256, 0.48561013, 0.48561013, 1), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2u4xb"]
@@ -129,32 +153,18 @@ _data = {
 &"RESET": SubResource("Animation_dl2hy"),
 &"attack": SubResource("Animation_1asqd"),
 &"die": SubResource("Animation_c1ryt"),
+&"shine": SubResource("Animation_bhidw"),
 &"take_damage": SubResource("Animation_2u4xb")
 }
 
-[node name="Cell" type="Control" unique_id=514344857]
-layout_mode = 3
-anchors_preset = 0
+[node name="Cell" type="PanelContainer" unique_id=1150349676]
 offset_right = 128.0
 offset_bottom = 128.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_c1ryt")
 script = ExtResource("1_dl2hy")
 
-[node name="Panel" type="Panel" parent="." unique_id=846505312]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_8s51a")
-
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1519328411]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
@@ -167,7 +177,6 @@ size_flags_vertical = 1
 theme_override_styles/background = SubResource("StyleBoxFlat_6kug8")
 theme_override_styles/fill = SubResource("StyleBoxFlat_cqjcw")
 max_value = 10.0
-step = 1.0
 value = 10.0
 fill_mode = 3
 show_percentage = false
@@ -181,7 +190,8 @@ theme_override_constants/margin_bottom = 4
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/MarginContainer" unique_id=367192546]
 layout_mode = 2
-stretch_mode = 5
+expand_mode = 1
+stretch_mode = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=979429627]
 libraries/ = SubResource("AnimationLibrary_2u4xb")

@@ -3,8 +3,7 @@
 [ext_resource type="Script" uid="uid://dhirolr3ola3w" path="res://sell_everything/formation/formation.gd" id="1_45q7e"]
 [ext_resource type="PackedScene" uid="uid://1eyi5k2au07p" path="res://sell_everything/cells/cell.tscn" id="2_271yi"]
 
-[node name="Formation" type="Control" unique_id=411641027]
-layout_mode = 3
+[node name="Formation" type="MarginContainer" unique_id=337239477]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -12,29 +11,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_45q7e")
 
-[node name="Background" type="ColorRect" parent="." unique_id=1576787435]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(1.6364455e-06, 0.6357067, 0.58883065, 1)
-
 [node name="RanksContainer" type="HBoxContainer" parent="." unique_id=733142995]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 
 [node name="Back" type="VBoxContainer" parent="RanksContainer" unique_id=116682168]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="0" parent="RanksContainer/Back" unique_id=514344857 instance=ExtResource("2_271yi")]
+[node name="Cell_b" parent="RanksContainer/Back" unique_id=514344857 instance=ExtResource("2_271yi")]
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -42,11 +26,11 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="0" parent="RanksContainer/Middle" unique_id=513570997 instance=ExtResource("2_271yi")]
+[node name="Cell_mt" parent="RanksContainer/Middle" unique_id=513570997 instance=ExtResource("2_271yi")]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="1" parent="RanksContainer/Middle" unique_id=1354979753 instance=ExtResource("2_271yi")]
+[node name="Cell_mb" parent="RanksContainer/Middle" unique_id=1354979753 instance=ExtResource("2_271yi")]
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -54,14 +38,14 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="0" parent="RanksContainer/Front" unique_id=2006431127 instance=ExtResource("2_271yi")]
+[node name="Cell_ft" parent="RanksContainer/Front" unique_id=2006431127 instance=ExtResource("2_271yi")]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="1" parent="RanksContainer/Front" unique_id=1153112722 instance=ExtResource("2_271yi")]
+[node name="Cell_fm" parent="RanksContainer/Front" unique_id=1153112722 instance=ExtResource("2_271yi")]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="2" parent="RanksContainer/Front" unique_id=1161661057 instance=ExtResource("2_271yi")]
+[node name="Cell_fb" parent="RanksContainer/Front" unique_id=1161661057 instance=ExtResource("2_271yi")]
 layout_mode = 2
 size_flags_vertical = 3

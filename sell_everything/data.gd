@@ -14,9 +14,20 @@ static var items = {
 	"knife": {
 		"image": load("res://sell_everything/images/knife.png"),
 		"group": "items",
-		"active": {"attack": 1},
-		"cooldown": 1.0,
+		"active": {
+			"attack": 1,
+			"range": 1,
+		},
 		"hp": 2,
+	},
+	"sword": {
+		"image": load("res://sell_everything/images/sword.png"),
+		"group": "items",
+		"active": {
+			"attack": 1,
+			"range": 2,
+		},
+		"hp": 3,
 	},
 	"shield": {
 		"image": load("res://sell_everything/images/shield.png"),
@@ -36,13 +47,20 @@ static var items = {
 	"archer": {
 		"image": load("res://sell_everything/images/archer.png"),
 		"group": "characters",
-		"active": {"attack": 2},
+		"active": {
+			"attack": 3,
+			"range": 5,
+		},
 		"hp": 5,
 	},
 	"knight": {
 		"image": load("res://sell_everything/images/knight.png"),
 		"group": "characters",
 		"hp": 10,
+		"active": {
+			"attack": 2,
+			"range": 5,
+		},
 	},
 	"theif": {
 		"image": load("res://sell_everything/images/theif.png"),
@@ -53,6 +71,7 @@ static var items = {
 static var items_by_group = {}
 
 
+
 static func _static_init() -> void:
 	var dict = {}
 	for item in items:
@@ -61,6 +80,10 @@ static func _static_init() -> void:
 			dict[group] = []
 		dict[group].append(item)
 	items_by_group = dict
+
+	
+static func get_item_list():
+	return items
 	
 	
 static func rand_by_group(group: String):
