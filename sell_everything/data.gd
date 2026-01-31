@@ -1,14 +1,94 @@
 extends RefCounted
 class_name Data
 
+const adjacencies = {
+	1: {
+		0: [1,2],
+		1: [3,4],
+		2: [4,5],
+		3: [6],
+		4: [7],
+		5: [8],
+		6: [3],
+		7: [4],
+		8: [5],
+		9: [6,7],
+		10: [7,8],
+		11: [9,10],
+	},
+	2: {
+		0: [3,4,5],
+		1: [6,7],
+		2: [7,8],
+		3: [9],
+		4: [9,10],
+		5: [10],
+		6: [1],
+		7: [1,2],
+		8: [2],
+		9: [3,4],
+		10: [4,5],
+		11: [6,7,8],
+	},
+	3: {
+		0: [6,7,8],
+		1: [9],
+		2: [10],
+		3: [11],
+		4: [11],
+		5: [11],
+		6: [0],
+		7: [0],
+		8: [0],
+		9: [1],
+		10: [2],
+		11: [3,4,5],
+	},
+	4: {
+		0: [9.10],
+		1: [11],
+		2: [11],
+		3: [],
+		4: [],
+		5: [],
+		6: [],
+		7: [],
+		8: [],
+		9: [0],
+		10: [0],
+		11: [1,2],
+	},
+	5: {
+		0: [11],
+		1: [],
+		2: [],
+		3: [],
+		4: [],
+		5: [],
+		6: [],
+		7: [],
+		8: [],
+		9: [],
+		10: [],
+		11: [0],
+	},
+}
 const loadouts: = {
 	"knight": {
-		"items":["knife"],
-		"equipment":["shield"],
-		"characters":["knight"],
+		1: "knight", 
+		3: "knife", 
+		4: "shield",
 	},
-	"archer": {},
-	"theif": {},
+	"archer": {
+		0: "archer", 
+		3: "white_flag", 
+		4: "white_flag" 
+	},
+	"theif": {
+		3: "knife",
+		4: "theiving_gloves", 
+		5: "theif",
+	},
 }
 static var items = {
 	"knife": {
@@ -37,7 +117,9 @@ static var items = {
 	"theiving_gloves": {
 		"image": load("res://sell_everything/images/theiving-gloves.png"),
 		"group": "equipment",
-		"passive": {"steals": 1},
+		"passive": {
+			"steals": 1
+		},
 	},
 	"white_flag": {
 		"image": load("res://sell_everything/images/white-flag.png"),
@@ -48,7 +130,7 @@ static var items = {
 		"image": load("res://sell_everything/images/archer.png"),
 		"group": "characters",
 		"active": {
-			"attack": 3,
+			"attack": 1,
 			"range": 5,
 		},
 		"hp": 5,
@@ -59,13 +141,14 @@ static var items = {
 		"hp": 10,
 		"active": {
 			"attack": 2,
-			"range": 5,
+			"range": 4,
 		},
 	},
 	"theif": {
 		"image": load("res://sell_everything/images/theif.png"),
 		"group": "characters",
 		"hp": 5,
+		"passive": {"steals": 1}
 	},
 }
 static var items_by_group = {}
@@ -80,6 +163,36 @@ static func _static_init() -> void:
 			dict[group] = []
 		dict[group].append(item)
 	items_by_group = dict
+
+
+static func get_tooltip(item_name: String):
+	var data = items[item_name]
+	var text: = item_name.capitalize()
+	if "hp" in data:
+		text += "\nHp: %d" % data["hp"]
+	if "active" in data:
+		text += "\n" + str(data["active"])
+	if "passive" in data:
+		text += "\n" + str(data["passive"])
+	for ch in ["{", "}", '"',]:
+		text = text.replace(ch, "")
+	return text
+	
+	
+
+
+static func get_adjacencies(index, item_name):
+	var data = items[item_name]
+	var range_ = -1
+	if "active" in data and "range" in data["active"]:
+		range_ = data["active"]["range"]
+	else:
+		return []
+		
+	var adj = []
+	for r in range(range_, 1-1, -1):
+		adj += adjacencies[r][index]
+	return adj
 
 	
 static func get_item_list():

@@ -32,7 +32,6 @@ func _ready() -> void:
 	var rank_nodes = ranks.values()
 	if flipped: 
 		rank_nodes.reverse()
-		print(rank_nodes)
 	for rank in rank_nodes:
 		for cell in rank.get_children():
 			cells.append(cell)

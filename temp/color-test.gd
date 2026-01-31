@@ -1,9 +1,5 @@
 extends Node2D
 
-
+@onready var te: TextEdit = $te
 func _ready() -> void:
-	Input.action_press("test")
-	print([2,3]==[2,3])
-	var a = [2,3]
-	var b = [2,3]
-	print(a==b)
+	te.call_deferred("set_v_scroll", 99999)

@@ -1,13 +1,12 @@
 extends PanelContainer
-#class_name Slot
+class_name Cell
 
-enum Phase {STEAL, FIGHT}
 var user: = ""
 var type: = ""
 var index: = -1
 var item_name = null
 var item_node = null
-var phase: = Phase.STEAL
+static var _phase: String
 
 
 func _ready() -> void:
@@ -18,6 +17,10 @@ func _ready() -> void:
 	type = parent_name.to_lower()
 	index = int(name)
 	
+	
+static func set_phase(phase_name: String):
+	_phase = phase_name
+
 	
 func _get_drag_data(_at_position: Vector2) -> Variant:
 	if not is_instance_valid(item_node):
@@ -41,7 +44,6 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		if incoming.user == "player":
 			swap = item_name
 		clear_item()
-	print(data["slot"].info())
 	set_item(data["slot"].item_name)
 	data["on_dropped"].call(swap)
 
@@ -53,13 +55,12 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	if user == "player" and from_slot.user == "player" and from_slot != self:
 		return true
 	# Stealing
-	if from_slot.user == "enemy" and phase == Phase.STEAL:
+	if from_slot.user == "enemy" and _phase == "steal":
 		return user == "player"
 	return false
 
 # I was dropped elsewhere
 func on_dropped(swap_item):
-	print("setting: ", swap_item)
 	if is_instance_valid(item_node):
 		clear_item()
 	if swap_item:
@@ -67,7 +68,6 @@ func on_dropped(swap_item):
 
 
 func clear_item():
-	print("clear item call")
 	item_node.queue_free()
 	item_node = null
 	item_name = null

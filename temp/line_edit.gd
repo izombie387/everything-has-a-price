@@ -1,10 +1,8 @@
 extends LineEdit
 
 var early_lambda = (func(l):
-	print("lambda pos:")
 	print(max_length)
 	var x = int(max_length)
-	print("bound")
 	print(l)
 	print(x)).bind(max_length)
 

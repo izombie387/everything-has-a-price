@@ -4,7 +4,9 @@ extends PanelContainer
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var tex: TextureRect = $MarginContainer/MarginContainer/TextureRect
 enum Phase {STEAL, FIGHT}
+
 signal clicked(index)
+
 var user: = ""
 var type: = ""
 var index: = -1
@@ -16,10 +18,20 @@ var hp_tween
 
 func _ready() -> void:
 	var user_name = owner.name
-	var parent_name = get_parent().name
 	assert(user_name != "ItemCollection")
 	user = user_name.to_lower()
+	if user == "enemy":
+		tex.flip_h = true
+
+	var parent_name = get_parent().name
 	type = parent_name.to_lower()
+	
+	
+func hilight(hilight = true):
+	if hilight:
+		modulate = Color(0.554, 0.741, 1.572, 1.0)
+	else:
+		modulate = Color.WHITE
 	
 	
 func _get_drag_data(_at_position: Vector2) -> Variant:
@@ -44,7 +56,6 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 		if incoming.user == "player":
 			swap = item_name
 		clear_item()
-	print(data["slot"].info())
 	set_item(data["slot"].item_name)
 	data["on_dropped"].call(swap)
 
@@ -62,7 +73,6 @@ func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 
 # I was dropped elsewhere
 func on_dropped(swap_item):
-	print("setting: ", swap_item)
 	if item_name:
 		clear_item()
 	if swap_item:
@@ -70,13 +80,15 @@ func on_dropped(swap_item):
 
 
 func clear_item():
+	hp_bar.hide()
 	tex.texture = null
 	item_name = null
 	
 	
 func set_item(new_item_name: String):
+	hp_bar.show()
 	item_name = new_item_name
-	tooltip_text = item_name.capitalize()
+	tooltip_text = Data.get_tooltip(item_name)
 	
 	var data = Data.get_item(item_name)
 	var texture = data["image"]
@@ -121,5 +133,4 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton \
 			and event.pressed \
 			and event.button_index == MOUSE_BUTTON_RIGHT:
-		clicked.emit(index)
-		print(item_name, " clicked at ", index)
+		clicked.emit(self)

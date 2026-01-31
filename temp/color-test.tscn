@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://burxrci8tvahg" path="res://temp/color-test.gd" id="1_o7x4e"]
 [ext_resource type="Shader" uid="uid://mlxhehf758kh" path="res://temp/test-white.gdshader" id="2_sf0tn"]
+[ext_resource type="Texture2D" uid="uid://dn3rfwdv6x52e" path="res://sell_everything/images/archer.png" id="3_sf0tn"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vn0l6"]
 shader = ExtResource("2_sf0tn")
@@ -16,3 +17,12 @@ use_parent_material = true
 offset_right = 408.0
 offset_bottom = 168.0
 color = Color(0.2095688, 0.38513488, 0.35750508, 1)
+
+[node name="te" type="TextEdit" parent="." unique_id=643335777]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1022580607]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("3_sf0tn")

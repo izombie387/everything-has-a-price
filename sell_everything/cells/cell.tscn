@@ -171,6 +171,7 @@ theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
 [node name="ProgressBar" type="ProgressBar" parent="MarginContainer" unique_id=368259545]
+visible = false
 modulate = Color(1, 1, 1, 0.5764706)
 layout_mode = 2
 size_flags_vertical = 1

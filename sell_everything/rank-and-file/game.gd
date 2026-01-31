@@ -1,146 +1,192 @@
 extends Control
 
 # Range: {Cell: cells in range}
-const adjacencies = {
-	1: {
-		0: [1,2],
-		1: [3,4],
-		2: [4,5],
-		3: [6],
-		4: [7],
-		5: [8],
-		6: [3],
-		7: [4],
-		8: [5],
-		9: [6,7],
-		10: [7,8],
-		11: [9,10],
-	},
-	2: {
-		0: [3,4,5],
-		1: [6,7],
-		2: [7,8],
-		3: [9],
-		4: [9,10],
-		5: [10],
-		6: [1],
-		7: [1,2],
-		8: [2],
-		9: [3,4],
-		10: [4,5],
-		11: [6,7,8],
-	},
-	3: {
-		0: [6,7,8],
-		1: [9],
-		2: [10],
-		3: [11],
-		4: [11],
-		5: [11],
-		6: [0],
-		7: [0],
-		8: [0],
-		9: [1],
-		10: [2],
-		11: [3,4,5],
-	},
-	4: {
-		0: [9.10],
-		1: [11],
-		2: [11],
-		3: [],
-		4: [],
-		5: [],
-		6: [],
-		7: [],
-		8: [],
-		9: [0],
-		10: [0],
-		11: [1,2],
-	},
-	5: {
-		0: [11],
-		1: [],
-		2: [],
-		3: [],
-		4: [],
-		5: [],
-		6: [],
-		7: [],
-		8: [],
-		9: [],
-		10: [],
-		11: [0],
-	},
-}
-@onready var player: Control = $MarginContainer/VBoxContainer/HBoxContainer/Player
-@onready var enemy: Control = $MarginContainer/VBoxContainer/HBoxContainer/Enemy
+@onready var actions: HBoxContainer = $Margin/VBox/Bottom/Actions
+@onready var debug_layer: CanvasLayer = $DebugLayer
+@onready var player: Control = $Margin/VBox/HBox/Player
+@onready var enemy: Control = $Margin/VBox/HBox/Enemy
 @onready var users = [player, enemy]
-var c=0
-var current_cell = 0
-
-
-var group_sizes = {
+@onready var char_buttons = {
+	"knight": $Margin/VBox/HBox/Enemy/CharSelect/VBox/Buttons/Knight,
+	"archer": $Margin/VBox/HBox/Enemy/CharSelect/VBox/Buttons/Archer,
+	"theif": $Margin/VBox/HBox/Enemy/CharSelect/VBox/Buttons/Theif,
+}
+var current_index: = 0
+var hovering_cell = null
+var group_sizes: = {
 	"back": 1,
 	"middle": 2,
 	"front": 3,
 }
-var cells = []
+var cells: = []
+var active_targets = {}
+# arrange, fight, steal
+var phase: = "character_select":
+	set(v):
+		phase = v
+		print("Phase: ", phase)
+		Cell.set_phase(phase)
+		match phase:
+			"character_select":
+				pass
+			"arrange":
+				actions.show()
+				var arr_label = actions.get_node("Arrange")
+				arr_label.theme_type_variation = "hilighted_label"
+			"fight":
+				actions.get_node("Arrange").theme_type_variation = "disabled_label"
+			"steal":
+				actions.get_node("Fight").disabled = true
+				actions.get_node("Steal").theme_type_variation = "hilighted_label"
+
 
 func _ready() -> void:
+	actions.hide()
 	await get_tree().process_frame
-	player.load_data(Data.loadouts["knight"])
-	enemy.load_data(Data.loadouts["knight"])
 	cells = player.cells + enemy.cells
-	poke_cells()
 	var i = 0
 	for cell in cells:
+		cell.clear_item()
 		cell.clicked.connect(_cell_clicked)
+		cell.mouse_entered.connect(_cell_hovered.bind(cell))
+		cell.mouse_exited.connect(_cell_unhovered.bind(cell))
 		cell.index = i
 		i += 1
+	for char_name in char_buttons:
+		var btn = char_buttons[char_name]
+		btn.pressed.connect(start_game)
+		btn.mouse_entered.connect(
+			(func(u,c):
+				clear_items(u)
+				loadout_user(u, c)
+				).bind(player, char_name)
+		)
+	actions.get_node("Fight").pressed.connect(on_fight_pressed)
+
+
+func on_fight_pressed():
+	if phase == "arrange":
+		phase = "fight"
+		populate_targets()
+		if active_targets.is_empty():
+			end_fight()
+			return
 		
+	if phase == "fight":
+		process_next_cell()
+
+func populate_targets():
+	var active_cells = cells.filter(
+			func(c): return is_active(c))
+	active_targets.clear()
+	for cell in active_cells:
+		var target = get_target(cell, cell.item_name)
+		if target:
+			active_targets[cell] = target
+
+
+func start_game():
+	var char_select = $Margin/VBox/HBox/Enemy/CharSelect
+	char_select.hide()
+	loadout_random(enemy)
+	phase = "arrange"
+		
+
+func end_fight():
+	phase = "steal"
+
+
+func _cell_hovered(cell):
+	if cell.item_name:
+		hovering_cell = cell
+		hilight_cell(cell)
+
+
+func _cell_unhovered(cell):
+	if hovering_cell:
+		hovering_cell = null
+		hilight_cell(cell, false)
+
+
+func hilight_cell(cell, hilight = true):
+	var item_name = cell.item_name
+	for idx in Data.get_adjacencies(cell.index, item_name):
+		cells[idx].hilight(hilight)
+
+
+func loadout_user(_user, loadout_name):
+	var list = Data.loadouts[loadout_name]
+	for index in list:
+		cells[index].set_item(list[index])
+
+
+func loadout_random(user):
+	for cell in user.cells:
+		if randf() < 0.5:
+			continue
+		cell.set_item(Data.random_item_name()	)
 
 
 func _cell_clicked(index):
-	var debug = $DebugLayer
-	debug.show()
-	var item_name = await debug.item_selected
-	cells[index].set_item(item_name)
+	debug_layer.list.show()
+	var item_name: String = await debug_layer.item_selected
+	match item_name:
+		"none":
+			cells[index].clear_item()
+		"cancel":
+			return
+		"clear_all":
+			for cell in cells:
+				cell.clear_item()
+		"random_enemy":
+			clear_items(enemy)
+			loadout_random(enemy)
+		_:
+			if "load/" in item_name:
+				var loadout = item_name.trim_prefix("load/")
+				clear_items()
+				loadout_user(player, loadout)
+			else:
+				cells[index].set_item(item_name)
 	
 	
+func clear_items(user = null):
+	var to_clear = user.cells if user else cells
+	to_clear.map(func(c): c.clear_item())
+
+
 func poke_cells():
 	for cell in cells:
 		cell.get_node("AnimationPlayer").play("shine")
 		await get_tree().create_timer(0.10).timeout
 
 
-func process_cell(idx):
-	var cell = cells[idx]
+func is_active(cell):
 	var item_name = cell.item_name
 	if item_name == null or cell.hp <= 0:
 		return false
-	var item = Data.get_item(item_name)
-	var active = item.get("active")
-	if not active:
-		return false
+	var item_data = Data.get_item(item_name)
+	return "active" in item_data
 	
+	
+func get_target(cell, item_name):
+	var active = Data.get_item(item_name)["active"]
 	var target = null
-	var range_ = active["range"]
-	for ci in adjacencies[range_][idx]:
-		var cl = cells[ci]
-		if cl.item_name and \
-				cl.user != cell.user and \
-				cl.hp > 0:
-			target = cl
+	for adj_index in Data.get_adjacencies(cell.index, item_name):
+		var adj_cell = cells[adj_index]
+		if adj_cell.item_name and \
+				adj_cell.user != cell.user and \
+				adj_cell.hp > 0:
+			target = adj_cell
 			break
-	if target == null:
-		return false
-			
-	var attack_amount = active.get("attack")
+	return target
+
+
+func process_cell(cell, target):
+	var active = Data.get_item(cell.item_name)["active"]
+	var attack_amount = active["attack"]
 	cell.attack_target(target, attack_amount)
 	target.recieve_damage_from(cell, attack_amount)
-	
-	return true
 	
 
 func fill_random(node: Node) -> void:
@@ -153,11 +199,17 @@ func fill_random(node: Node) -> void:
 
 
 func process_next_cell():
-	for i in cells.size():
-		if process_cell(current_cell):
-			break
-		current_cell = (current_cell + 1) % cells.size()
-	current_cell = (current_cell + 1) % cells.size()
+	var target = active_targets.values()[current_index]
+	process_cell(
+			active_targets.keys()[current_index],
+			target)
+	if target.hp <= 0:
+		populate_targets()
+		if active_targets.is_empty():
+			end_fight()
+			return
+	current_index = (current_index + 1) % active_targets.size()
+			
 
 	
 func _input(event: InputEvent) -> void:
@@ -165,12 +217,6 @@ func _input(event: InputEvent) -> void:
 		match event.keycode:
 			KEY_P:
 				process_next_cell()
-			KEY_SPACE:
-				enemy.add_item(
-					Data.random_item_name(),
-					"items",
-					c)
-				c = (c+1)%6
 			KEY_R:
 				get_tree().reload_current_scene()
 			KEY_F:
@@ -179,6 +225,12 @@ func _input(event: InputEvent) -> void:
 					w.mode = w.MODE_WINDOWED
 				else:
 					w.mode = w.MODE_FULLSCREEN
+			KEY_C:
+				var loadout = {}
+				for cell in cells:
+					if cell.item_name:
+						loadout[cell.index] = cell.item_name
+				print(loadout)
 
 #func get_adjacencies():
 	#var adj = {}

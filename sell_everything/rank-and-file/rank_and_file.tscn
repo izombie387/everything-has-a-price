@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://7rundfcx6tq1" path="res://sell_everything/rank-and-file/game.gd" id="1_hy1n8"]
 [ext_resource type="PackedScene" uid="uid://bqfemsgkvedvs" path="res://sell_everything/formation/formation.tscn" id="1_lo6tx"]
 [ext_resource type="Script" uid="uid://ekf0oeafl32u" path="res://sell_everything/rank-and-file/debug-layer.gd" id="3_36vbh"]
+[ext_resource type="Texture2D" uid="uid://wvfyp65fc02j" path="res://sell_everything/images/knight.png" id="3_sma6y"]
+[ext_resource type="Texture2D" uid="uid://dn3rfwdv6x52e" path="res://sell_everything/images/archer.png" id="4_dddf4"]
+[ext_resource type="Texture2D" uid="uid://7ccjeyjau2bu" path="res://sell_everything/images/theif.png" id="5_kwghf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hy1n8"]
 content_margin_left = 0.0
@@ -25,44 +28,117 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_hy1n8")
 script = ExtResource("1_hy1n8")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1223519902]
+[node name="Margin" type="MarginContainer" parent="." unique_id=1223519902]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1835053010]
+[node name="VBox" type="VBoxContainer" parent="Margin" unique_id=1835053010]
 layout_mode = 2
 
-[node name="Top" type="Control" parent="MarginContainer/VBoxContainer" unique_id=241867341]
+[node name="Top" type="Control" parent="Margin/VBox" unique_id=241867341]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1019830051]
+[node name="HBox" type="HBoxContainer" parent="Margin/VBox" unique_id=1019830051]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 5.0
 theme_override_constants/separation = 16
 
-[node name="Player" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1005811964 instance=ExtResource("1_lo6tx")]
+[node name="Player" parent="Margin/VBox/HBox" unique_id=1005811964 instance=ExtResource("1_lo6tx")]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Enemy" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=411641027 instance=ExtResource("1_lo6tx")]
+[node name="Enemy" parent="Margin/VBox/HBox" unique_id=411641027 instance=ExtResource("1_lo6tx")]
 layout_mode = 2
 size_flags_horizontal = 3
 flipped = true
 
-[node name="Bottom" type="Control" parent="MarginContainer/VBoxContainer" unique_id=619654550]
+[node name="CharSelect" type="MarginContainer" parent="Margin/VBox/HBox/Enemy" unique_id=360613249]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBox" type="VBoxContainer" parent="Margin/VBox/HBox/Enemy/CharSelect" unique_id=1118250297]
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="Margin/VBox/HBox/Enemy/CharSelect/VBox" unique_id=1514580047]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Knight" type="Button" parent="Margin/VBox/HBox/Enemy/CharSelect/VBox/Buttons" unique_id=1520932696]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Knight"
+icon = ExtResource("3_sma6y")
+
+[node name="Archer" type="Button" parent="Margin/VBox/HBox/Enemy/CharSelect/VBox/Buttons" unique_id=615501560]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Archer"
+icon = ExtResource("4_dddf4")
+
+[node name="Theif" type="Button" parent="Margin/VBox/HBox/Enemy/CharSelect/VBox/Buttons" unique_id=1693520351]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Theif"
+icon = ExtResource("5_kwghf")
+
+[node name="Label" type="Label" parent="Margin/VBox/HBox/Enemy/CharSelect/VBox" unique_id=1342538437]
+layout_mode = 2
+theme_type_variation = &"light_label"
+text = "Character Select"
+horizontal_alignment = 1
+
+[node name="Bottom" type="MarginContainer" parent="Margin/VBox" unique_id=1372365187]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/margin_left = 90
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 90
+
+[node name="Actions" type="HBoxContainer" parent="Margin/VBox/Bottom" unique_id=138984476]
+layout_mode = 2
+alignment = 1
+
+[node name="Arrange" type="Label" parent="Margin/VBox/Bottom/Actions" unique_id=1985745940]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"hilighted_label"
+text = "Arrange"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Fight" type="Button" parent="Margin/VBox/Bottom/Actions" unique_id=1787666710]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Fight"
+
+[node name="Auto" type="Button" parent="Margin/VBox/Bottom/Actions" unique_id=333746616]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.25
+text = "Auto"
+
+[node name="Steal" type="Label" parent="Margin/VBox/Bottom/Actions" unique_id=103858768]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"disabled_label"
+text = "Steal"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="DebugLayer" type="CanvasLayer" parent="." unique_id=1258252165]
-visible = false
 script = ExtResource("3_36vbh")
 
 [node name="DebugList" type="ItemList" parent="DebugLayer" unique_id=1542292941]
+visible = false
 custom_minimum_size = Vector2(64, 64)
 anchors_preset = 8
 anchor_left = 0.5
@@ -75,5 +151,7 @@ offset_right = 192.0
 offset_bottom = 168.0
 grow_horizontal = 2
 grow_vertical = 2
+max_columns = 2
+same_column_width = true
 
 [connection signal="item_clicked" from="DebugLayer/DebugList" to="DebugLayer" method="_on_debug_list_item_clicked"]

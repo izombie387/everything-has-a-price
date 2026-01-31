@@ -35,6 +35,5 @@ func add_item(
 ):
 	var slot = groups[group].get_children()[index]
 	if is_instance_valid(slot.item_node):
-		print("need to free")
 		slot.clear_item()
 	slot.set_item(item_name)

@@ -14,7 +14,6 @@ var group_sizes = {
 
 
 func _ready() -> void:
-	print(int(KEY_A))
 	player.load_data(Data.loadouts["knight"])
 	enemy.load_data(Data.loadouts["knight"])
 
