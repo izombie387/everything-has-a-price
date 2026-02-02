@@ -1,7 +1,12 @@
 extends Control
 
 # Range: {Cell: cells in range}
-@onready var actions: HBoxContainer = $Margin/VBox/Bottom/Actions
+@export var instructions: Label
+@export var fight_button: Button
+@export var next_button: Button
+@export var drop_sell: PanelContainer
+@export var actions: Control
+
 @onready var debug_layer: CanvasLayer = $DebugLayer
 @onready var player: Control = $Margin/VBox/HBox/Player
 @onready var enemy: Control = $Margin/VBox/HBox/Enemy
@@ -30,14 +35,15 @@ var phase: = "character_select":
 			"character_select":
 				pass
 			"arrange":
+				fight_button.disabled = false
+				next_button.disabled = true
 				actions.show()
-				var arr_label = actions.get_node("Arrange")
-				arr_label.theme_type_variation = "hilighted_label"
+				instructions.theme_type_variation = "hilighted_label"
 			"fight":
-				actions.get_node("Arrange").theme_type_variation = "disabled_label"
+				instructions.theme_type_variation = "disabled_label"
 			"steal":
-				actions.get_node("Fight").disabled = true
-				actions.get_node("Steal").theme_type_variation = "hilighted_label"
+				fight_button.disabled = true
+				next_button.disabled = false
 
 
 func _ready() -> void:
@@ -62,32 +68,47 @@ func _ready() -> void:
 				).bind(player, char_name)
 		)
 	actions.get_node("Fight").pressed.connect(on_fight_pressed)
+	for sellable: Control in get_tree().get_nodes_in_group("sellables"):
+		sellable.set_script(load(
+				"res://sell_everything/sellable.gd"))
 
 
 func on_fight_pressed():
-	if phase == "arrange":
-		phase = "fight"
-		populate_targets()
-		if active_targets.is_empty():
-			end_fight()
-			return
-		
-	if phase == "fight":
-		process_next_cell()
+	match phase:
+		"arrange":
+			phase = "fight"
+			populate_targets()
+			if active_targets.is_empty():
+				end_fight()
+				return
+		"fight":
+			process_next_cell()
+			
 
 func populate_targets():
 	var active_cells = cells.filter(
 			func(c): return is_active(c))
-	active_targets.clear()
+	var p_targets = []
+	var e_targets = []
 	for cell in active_cells:
 		var target = get_target(cell, cell.item_name)
 		if target:
-			active_targets[cell] = target
+			if cell.user == "player":
+				p_targets.append([cell,target])
+			elif cell.user == "enemy":
+				e_targets.append([cell,target])
+	active_targets.clear()
+	for i in max(p_targets.size(), e_targets.size()):
+		if i < p_targets.size():
+			active_targets[p_targets[i][0]] = p_targets[i][1]
+		if i < e_targets.size():
+			active_targets[e_targets[i][0]] = e_targets[i][1]
 
 
 func start_game():
 	var char_select = $Margin/VBox/HBox/Enemy/CharSelect
 	char_select.hide()
+	clear_items(enemy)
 	loadout_random(enemy)
 	phase = "arrange"
 		
@@ -120,19 +141,22 @@ func loadout_user(_user, loadout_name):
 		cells[index].set_item(list[index])
 
 
-func loadout_random(user):
-	for cell in user.cells:
-		if randf() < 0.5:
-			continue
-		cell.set_item(Data.random_item_name()	)
+func loadout_random(user: MarginContainer):
+	var enemies = 0
+	while enemies < 3:
+		for cell in user.cells:
+			if randf() < 0.5:
+				continue
+			cell.set_item(Data.random_item_name()	)
+			enemies += 1
 
 
-func _cell_clicked(index):
+func _cell_clicked(clicked_cell):
 	debug_layer.list.show()
 	var item_name: String = await debug_layer.item_selected
 	match item_name:
 		"none":
-			cells[index].clear_item()
+			clicked_cell.clear_item()
 		"cancel":
 			return
 		"clear_all":
@@ -147,7 +171,7 @@ func _cell_clicked(index):
 				clear_items()
 				loadout_user(player, loadout)
 			else:
-				cells[index].set_item(item_name)
+				clicked_cell.set_item(item_name)
 	
 	
 func clear_items(user = null):
@@ -170,7 +194,6 @@ func is_active(cell):
 	
 	
 func get_target(cell, item_name):
-	var active = Data.get_item(item_name)["active"]
 	var target = null
 	for adj_index in Data.get_adjacencies(cell.index, item_name):
 		var adj_cell = cells[adj_index]
@@ -215,6 +238,10 @@ func process_next_cell():
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed:
 		match event.keycode:
+			KEY_D:
+				clear_items()
+				loadout_random(player)
+				loadout_random(enemy)
 			KEY_P:
 				process_next_cell()
 			KEY_R:
@@ -230,7 +257,7 @@ func _input(event: InputEvent) -> void:
 				for cell in cells:
 					if cell.item_name:
 						loadout[cell.index] = cell.item_name
-				print(loadout)
+
 
 #func get_adjacencies():
 	#var adj = {}

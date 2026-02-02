@@ -29,7 +29,6 @@ func _get_drag_data(_at_position: Vector2) -> Variant:
 	preview.size = size/2.0
 	preview.color = Color(0.416, 0.0, 0.0, 1.0)
 	set_drag_preview(preview)
-	print(info())
 	return {
 		"slot": self,
 		"on_dropped": on_dropped,

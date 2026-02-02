@@ -17,7 +17,7 @@ func _ready():
 		list.add_item(str("load/", loadout_name))
 	
 
-func _on_debug_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
+func _on_debug_list_item_clicked(index: int, _at_position: Vector2, _mouse_button_index: int) -> void:
 	var item_name = list.get_item_text(index)
 	item_selected.emit(item_name)
 	list.hide()

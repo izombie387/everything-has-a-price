@@ -45,7 +45,7 @@ const adjacencies = {
 		11: [3,4,5],
 	},
 	4: {
-		0: [9.10],
+		0: [9,10],
 		1: [11],
 		2: [11],
 		3: [],
@@ -99,6 +99,7 @@ static var items = {
 			"range": 1,
 		},
 		"hp": 2,
+		"price": 1,
 	},
 	"sword": {
 		"image": load("res://sell_everything/images/sword.png"),
@@ -148,11 +149,14 @@ static var items = {
 		"image": load("res://sell_everything/images/theif.png"),
 		"group": "characters",
 		"hp": 5,
-		"passive": {"steals": 1}
+		"active": {
+			"attack": 2,
+			"range": 3,
+		},
 	},
 }
 static var items_by_group = {}
-
+static var gold: = 2
 
 
 static func _static_init() -> void:
@@ -163,6 +167,13 @@ static func _static_init() -> void:
 			dict[group] = []
 		dict[group].append(item)
 	items_by_group = dict
+
+
+static func get_gold():
+	return gold
+
+static func add_gold(amount):
+	gold += amount
 
 
 static func get_tooltip(item_name: String):

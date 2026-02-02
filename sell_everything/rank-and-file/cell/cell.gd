@@ -1,9 +1,8 @@
 extends PanelContainer
 
-@onready var hp_bar: ProgressBar = $MarginContainer/ProgressBar
-@onready var anim: AnimationPlayer = $AnimationPlayer
-@onready var tex: TextureRect = $MarginContainer/MarginContainer/TextureRect
-enum Phase {STEAL, FIGHT}
+@export var hp_bar: ProgressBar
+@export var anim: AnimationPlayer
+@export var tex: TextureRect
 
 signal clicked(index)
 
@@ -11,12 +10,14 @@ var user: = ""
 var type: = ""
 var index: = -1
 var item_name = null
-var phase: = Phase.STEAL
+
 var hp = -1
 var hp_tween
+var phase: = ""
 
 
 func _ready() -> void:
+	hp_bar.hide()
 	var user_name = owner.name
 	assert(user_name != "ItemCollection")
 	user = user_name.to_lower()
@@ -27,8 +28,8 @@ func _ready() -> void:
 	type = parent_name.to_lower()
 	
 	
-func hilight(hilight = true):
-	if hilight:
+func hilight(hilight_ = true):
+	if hilight_:
 		modulate = Color(0.554, 0.741, 1.572, 1.0)
 	else:
 		modulate = Color.WHITE
@@ -37,11 +38,13 @@ func hilight(hilight = true):
 func _get_drag_data(_at_position: Vector2) -> Variant:
 	if not item_name:
 		return
+	if user == "enemy":
+		if phase != "shop" or item_name == null:
+			return
 	var preview = ColorRect.new()
 	preview.size = size/2.0
-	preview.color = Color(0.416, 0.0, 0.0, 1.0)
+	preview.color = Color(0.416, 0.0, 0.0, 0.57)
 	set_drag_preview(preview)
-	print(info())
 	return {
 		"slot": self,
 		"on_dropped": on_dropped,
@@ -62,18 +65,26 @@ func _drop_data(_at_position: Vector2, data: Variant) -> void:
 
 # Can drop here
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	var from_slot = data["slot"]
+	var from_slot = data.get("slot")
+	if not from_slot:
+		return false
 	# Self swapping
 	if user == "player" and from_slot.user == "player" and from_slot != self:
 		return true
-	# Stealing
-	if from_slot.user == "enemy" and phase == Phase.STEAL:
-		return user == "player"
+	# Shopping
+	if from_slot.user == "enemy"\
+			and user == "player"\
+			and phase == "shop"\
+			and item_name == null\
+			and Data.get_gold() >= data.get("value", 1):
+		return true
 	return false
 
 # I was dropped elsewhere
 func on_dropped(swap_item):
 	if item_name:
+		Data.add_gold(
+				-Data.get_item(item_name).get("value", 1))
 		clear_item()
 	if swap_item:
 		set_item(swap_item)
@@ -117,8 +128,13 @@ func recieve_damage_from(_cell, amount):
 	
 	
 func die():
+	hilight(false)
+	if anim.is_playing():
+		await anim.animation_finished
 	anim.play("die")
-
+	await anim.animation_finished
+	hilight(false)
+	
 	
 func info():
 	return str(

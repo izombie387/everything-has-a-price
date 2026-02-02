@@ -12,14 +12,14 @@ content_margin_left = 0.0
 content_margin_top = 0.0
 content_margin_right = 0.0
 content_margin_bottom = 0.0
-bg_color = Color(0.41143367, 0.41143367, 0.4114336, 1)
+bg_color = Color(0.4117647, 0.4117647, 0.4117647, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[node name="RankAndFile" type="PanelContainer" unique_id=1104652568]
+[node name="RankAndFile" type="PanelContainer" unique_id=1104652568 node_paths=PackedStringArray("instructions", "fight_button", "next_button", "drop_sell", "actions")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -27,6 +27,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_hy1n8")
 script = ExtResource("1_hy1n8")
+instructions = NodePath("Margin/VBox/Actions/Instructions")
+fight_button = NodePath("Margin/VBox/Actions/Fight")
+next_button = NodePath("Margin/VBox/Actions/Next")
+drop_sell = NodePath("Margin/VBox/Actions/DropSell")
+actions = NodePath("Margin/VBox/Actions")
 
 [node name="Margin" type="MarginContainer" parent="." unique_id=1223519902]
 layout_mode = 2
@@ -41,6 +46,15 @@ layout_mode = 2
 [node name="Top" type="Control" parent="Margin/VBox" unique_id=241867341]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="GoldCell" type="PanelContainer" parent="Margin/VBox/Top" unique_id=1345705674 groups=["sellables"]]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Margin/VBox/Top/GoldCell" unique_id=222596723]
+layout_mode = 2
+text = "Gold: 5"
 
 [node name="HBox" type="HBoxContainer" parent="Margin/VBox" unique_id=1019830051]
 layout_mode = 2
@@ -69,70 +83,74 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Knight" type="Button" parent="Margin/VBox/HBox/Enemy/CharSelect/VBox/Buttons" unique_id=1520932696]
+[node name="Knight" type="Button" parent="Margin/VBox/HBox/Enemy/CharSelect/VBox/Buttons" unique_id=1520932696 groups=["sellables"]]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Knight"
 icon = ExtResource("3_sma6y")
 
-[node name="Archer" type="Button" parent="Margin/VBox/HBox/Enemy/CharSelect/VBox/Buttons" unique_id=615501560]
+[node name="Archer" type="Button" parent="Margin/VBox/HBox/Enemy/CharSelect/VBox/Buttons" unique_id=615501560 groups=["sellables"]]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Archer"
 icon = ExtResource("4_dddf4")
 
-[node name="Theif" type="Button" parent="Margin/VBox/HBox/Enemy/CharSelect/VBox/Buttons" unique_id=1693520351]
+[node name="Theif" type="Button" parent="Margin/VBox/HBox/Enemy/CharSelect/VBox/Buttons" unique_id=1693520351 groups=["sellables"]]
 layout_mode = 2
 size_flags_horizontal = 3
 tooltip_text = "Theif"
 icon = ExtResource("5_kwghf")
 
-[node name="Label" type="Label" parent="Margin/VBox/HBox/Enemy/CharSelect/VBox" unique_id=1342538437]
+[node name="Label" type="Label" parent="Margin/VBox/HBox/Enemy/CharSelect/VBox" unique_id=1342538437 groups=["sellables"]]
 layout_mode = 2
 theme_type_variation = &"light_label"
 text = "Character Select"
 horizontal_alignment = 1
 
-[node name="Bottom" type="MarginContainer" parent="Margin/VBox" unique_id=1372365187]
+[node name="Actions" type="Control" parent="Margin/VBox" unique_id=1355950924]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/margin_left = 90
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 90
 
-[node name="Actions" type="HBoxContainer" parent="Margin/VBox/Bottom" unique_id=138984476]
-layout_mode = 2
-alignment = 1
-
-[node name="Arrange" type="Label" parent="Margin/VBox/Bottom/Actions" unique_id=1985745940]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
+[node name="Instructions" type="Label" parent="Margin/VBox/Actions" unique_id=1985745940 groups=["sellables"]]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 9.0
+offset_right = 239.0
+offset_bottom = 46.0
+size_flags_horizontal = 6
 theme_type_variation = &"hilighted_label"
 text = "Arrange"
-horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Fight" type="Button" parent="Margin/VBox/Bottom/Actions" unique_id=1787666710]
-layout_mode = 2
-size_flags_horizontal = 3
+[node name="Fight" type="Button" parent="Margin/VBox/Actions" unique_id=1787666710 groups=["sellables"]]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 0
+offset_left = 256.0
+offset_top = 9.0
+offset_right = 352.0
+offset_bottom = 45.0
+size_flags_horizontal = 6
+size_flags_vertical = 4
 text = "Fight"
 
-[node name="Auto" type="Button" parent="Margin/VBox/Bottom/Actions" unique_id=333746616]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.25
-text = "Auto"
+[node name="Next" type="Button" parent="Margin/VBox/Actions" unique_id=333746616 groups=["sellables"]]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 0
+offset_left = 361.0
+offset_top = 9.0
+offset_right = 457.0
+offset_bottom = 45.0
+size_flags_horizontal = 6
+size_flags_vertical = 4
+disabled = true
+text = "Next"
 
-[node name="Steal" type="Label" parent="Margin/VBox/Bottom/Actions" unique_id=103858768]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-theme_type_variation = &"disabled_label"
-text = "Steal"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="DropSell" type="PanelContainer" parent="Margin/VBox/Actions" unique_id=682067384 groups=["sellables"]]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 9.0
+offset_right = 561.0
+offset_bottom = 49.0
 
 [node name="DebugLayer" type="CanvasLayer" parent="." unique_id=1258252165]
 script = ExtResource("3_36vbh")

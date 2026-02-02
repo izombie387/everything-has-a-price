@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://cm88wcj00ioi4"]
+
+[ext_resource type="Texture2D" uid="uid://dn3rfwdv6x52e" path="res://sell_everything/images/archer.png" id="1_tkcma"]
+[ext_resource type="Script" uid="uid://bex5qiwdd35fu" path="res://temp/test-translation.gd" id="2_k55ln"]
+
+[node name="Node2D" type="Node2D" unique_id=1817095068]
+
+[node name="Node2D" type="Node2D" parent="." unique_id=849931855]
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D" unique_id=1483615419]
+texture = ExtResource("1_tkcma")
+script = ExtResource("2_k55ln")
