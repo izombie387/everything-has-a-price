@@ -8,6 +8,3 @@ extends Sprite2D
 func _draw():
 	draw_set_transform(pos, deg_to_rad(rot))
 	draw_texture(texture, Vector2.ZERO, Color(1.0, 0.544, 0.479, 1.0))
-
-#func _ready() -> void:
-	#"".format()

@@ -1,4 +1,5 @@
 extends PanelContainer
+class_name Cell
 
 @export var hp_bar: ProgressBar
 @export var anim: AnimationPlayer
@@ -13,7 +14,7 @@ var item_name = null
 
 var hp = -1
 var hp_tween
-var phase: = ""
+static var phase: = ""
 
 
 func _ready() -> void:
@@ -23,10 +24,20 @@ func _ready() -> void:
 	user = user_name.to_lower()
 	if user == "enemy":
 		tex.flip_h = true
+		hp_bar.theme_type_variation = "EnemyProgressBar"
 
 	var parent_name = get_parent().name
 	type = parent_name.to_lower()
 	
+	
+static func set_phase(p):
+	phase = p
+
+
+func revive():
+	if item_name:
+		set_item(item_name)
+
 	
 func hilight(hilight_ = true):
 	if hilight_:
@@ -36,58 +47,71 @@ func hilight(hilight_ = true):
 	
 	
 func _get_drag_data(_at_position: Vector2) -> Variant:
-	if not item_name:
-		return
-	if user == "enemy":
-		if phase != "shop" or item_name == null:
-			return
+	if not item_name or phase == "character_select":
+		return null
+	assert(item_name != "", "not using this syntax")
+	if user == "enemy" and phase != "shop":
+		return null
+		
 	var preview = ColorRect.new()
 	preview.size = size/2.0
-	preview.color = Color(0.416, 0.0, 0.0, 0.57)
+	preview.color = Color(0.4, 0.0, 0.0, 0.4)
 	set_drag_preview(preview)
+	
 	return {
-		"slot": self,
+		"dragging_item": item_name,
+		"user": user,
 		"on_dropped": on_dropped,
+		"node": self,
 	}
 
 	
 # Dropping here
 func _drop_data(_at_position: Vector2, data: Variant) -> void:
-	var incoming = data["slot"]
-	var swap = null
-	if item_name:
-		if incoming.user == "player":
-			swap = item_name
-		clear_item()
-	set_item(data["slot"].item_name)
-	data["on_dropped"].call(swap)
+	Globals.play_sfx("swipe")
+	var drop_code = null
+	if data["user"] == "player":
+		drop_code = "swap"
+	else:
+		drop_code = "buy"
+	data["on_dropped"].call(drop_code, item_name)
+	#clear_item()
+	var inc_item = data["dragging_item"]
+	if inc_item:
+		set_item(inc_item)
 
 
 # Can drop here
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
-	var from_slot = data.get("slot")
-	if not from_slot:
-		return false
 	# Self swapping
-	if user == "player" and from_slot.user == "player" and from_slot != self:
+	if user == "player" and data["user"] == "player" and data["node"] != self:
 		return true
 	# Shopping
-	if from_slot.user == "enemy"\
+	if data["user"] == "enemy"\
 			and user == "player"\
 			and phase == "shop"\
 			and item_name == null\
-			and Data.get_gold() >= data.get("value", 1):
+			and Globals.get_gold() >= data.get("value", 1):
 		return true
 	return false
 
-# I was dropped elsewhere
-func on_dropped(swap_item):
-	if item_name:
-		Data.add_gold(
-				-Data.get_item(item_name).get("value", 1))
-		clear_item()
-	if swap_item:
-		set_item(swap_item)
+# I was dropped onto other_item
+func on_dropped(drop_code, other_item):
+	print("drop code: ", drop_code)
+	print("other item: ", other_item)
+	match drop_code:
+		"sell":
+			Globals.add_gold(
+					Data.get_item(item_name).get("value",1))
+			clear_item()
+		"buy":
+			Globals.add_gold(
+					-Data.get_item(item_name).get("value",1))
+			clear_item()
+		"swap":
+			clear_item()
+			if other_item:
+				set_item(other_item)
 
 
 func clear_item():
@@ -97,6 +121,7 @@ func clear_item():
 	
 	
 func set_item(new_item_name: String):
+	anim.play("RESET")
 	hp_bar.show()
 	item_name = new_item_name
 	tooltip_text = Data.get_tooltip(item_name)

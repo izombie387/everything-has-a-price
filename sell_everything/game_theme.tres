@@ -44,6 +44,35 @@ shadow_color = Color(0, 0, 0, 1)
 shadow_size = 2
 shadow_offset = Vector2(-1, 2)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q3h7k"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.35, 0.19098334, 0.18549998, 1)
+border_width_left = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gdmqc"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.506835, 0.63, 0.48509997, 1)
+border_width_left = 4
+border_width_bottom = 2
+border_color = Color(0.12001591, 0.12001591, 0.12001591, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hk3x0"]
 bg_color = Color(0.3299832, 0.32998317, 0.32998317, 1)
 
@@ -59,18 +88,53 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6kug8"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.44391775, 0.10271219, 0.09173057, 1)
+border_width_left = 4
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqjcw"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.5175, 0.9, 0.45, 1)
+border_width_left = 4
+border_width_bottom = 2
+border_color = Color(0.12001591, 0.12001591, 0.12001591, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hk3x0"]
 
 [resource]
-default_font_size = 24
+default_font_size = 18
 Button/colors/font_color = Color(0.73319995, 0.86417335, 0.94, 1)
 Button/colors/font_disabled_color = Color(0.4117647, 0.4117647, 0.4117647, 1)
 Button/styles/disabled = SubResource("StyleBoxFlat_knj5o")
 Button/styles/hover = SubResource("StyleBoxFlat_3l2xg")
 Button/styles/normal = SubResource("StyleBoxFlat_8jx5j")
 Button/styles/pressed = SubResource("StyleBoxFlat_ilvfj")
+EnemyProgressBar/base_type = &"ProgressBar"
+EnemyProgressBar/styles/background = SubResource("StyleBoxFlat_q3h7k")
+EnemyProgressBar/styles/fill = SubResource("StyleBoxFlat_gdmqc")
+Label/colors/font_color = Color(0.72269875, 0.7731857, 0.85172606, 1)
 Label/styles/normal = SubResource("StyleBoxFlat_hk3x0")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_c1ryt")
+ProgressBar/styles/background = SubResource("StyleBoxFlat_6kug8")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_cqjcw")
 disabled_label/base_type = &"Label"
 disabled_label/colors/font_color = Color(0.41143367, 0.41143367, 0.4114336, 1)
 hilighted/base_type = &"PanelContainer"

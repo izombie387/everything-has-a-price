@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dvlvpykxki4tf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u40h0"]
+
+[node name="cl-rigid-test" type="Node2D" unique_id=1991575687]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1281745513]
+layer = 5
+
+[node name="RigidBody2D" type="RigidBody2D" parent="CanvasLayer" unique_id=660692734]
+position = Vector2(100, 128)
+gravity_scale = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer/RigidBody2D" unique_id=1746474147]
+shape = SubResource("RectangleShape2D_u40h0")
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=430108123]
+
+[node name="RigidBody2D2" type="RigidBody2D" parent="CanvasLayer2" unique_id=447446977]
+position = Vector2(100, 19)
+gravity_scale = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasLayer2/RigidBody2D2" unique_id=1218593016]
+shape = SubResource("RectangleShape2D_u40h0")

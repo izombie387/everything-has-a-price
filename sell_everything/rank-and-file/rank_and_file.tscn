@@ -6,6 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://wvfyp65fc02j" path="res://sell_everything/images/knight.png" id="3_sma6y"]
 [ext_resource type="Texture2D" uid="uid://dn3rfwdv6x52e" path="res://sell_everything/images/archer.png" id="4_dddf4"]
 [ext_resource type="Texture2D" uid="uid://7ccjeyjau2bu" path="res://sell_everything/images/theif.png" id="5_kwghf"]
+[ext_resource type="Texture2D" uid="uid://bdi2dw67h5dot" path="res://sell_everything/images/sell-symbol.png" id="6_dddf4"]
+[ext_resource type="Script" uid="uid://bbujtbysbocab" path="res://sell_everything/rank-and-file/drop_sell.gd" id="6_kwghf"]
+[ext_resource type="Script" uid="uid://cu22yj6w856yf" path="res://sell_everything/rank-and-file/gold_label.gd" id="8_apkvq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hy1n8"]
 content_margin_left = 0.0
@@ -19,7 +22,26 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[node name="RankAndFile" type="PanelContainer" unique_id=1104652568 node_paths=PackedStringArray("instructions", "fight_button", "next_button", "drop_sell", "actions")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kwghf"]
+bg_color = Color(0.36752072, 0.36752072, 0.36752063, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_apkvq"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.35591966, 0.35591963, 0.35591963, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="RankAndFile" type="PanelContainer" unique_id=1104652568 node_paths=PackedStringArray("instructions", "fight_button", "next_button", "drop_sell", "actions", "player_hp_bar", "enemy_hp_bar")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -27,34 +49,50 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_hy1n8")
 script = ExtResource("1_hy1n8")
-instructions = NodePath("Margin/VBox/Actions/Instructions")
-fight_button = NodePath("Margin/VBox/Actions/Fight")
-next_button = NodePath("Margin/VBox/Actions/Next")
-drop_sell = NodePath("Margin/VBox/Actions/DropSell")
-actions = NodePath("Margin/VBox/Actions")
+instructions = NodePath("Margin/VBox/Bottom/Instructions")
+fight_button = NodePath("Margin/VBox/Bottom/Actions/Fight")
+next_button = NodePath("Margin/VBox/Bottom/Actions/Next")
+drop_sell = NodePath("Margin/VBox/Bottom/DropSell")
+actions = NodePath("Margin/VBox/Bottom/Actions")
+player_hp_bar = NodePath("Margin/VBox/Top/PlayerHp")
+enemy_hp_bar = NodePath("Margin/VBox/Top/EnemyHp")
 
 [node name="Margin" type="MarginContainer" parent="." unique_id=1223519902]
 layout_mode = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
 [node name="VBox" type="VBoxContainer" parent="Margin" unique_id=1835053010]
 layout_mode = 2
 
-[node name="Top" type="Control" parent="Margin/VBox" unique_id=241867341]
+[node name="Top" type="HBoxContainer" parent="Margin/VBox" unique_id=337654021]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
 
-[node name="GoldCell" type="PanelContainer" parent="Margin/VBox/Top" unique_id=1345705674 groups=["sellables"]]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Label" type="Label" parent="Margin/VBox/Top/GoldCell" unique_id=222596723]
+[node name="PlayerHp" type="ProgressBar" parent="Margin/VBox/Top" unique_id=943525796 groups=["sellables"]]
+modulate = Color(1, 1, 1, 0.5764706)
 layout_mode = 2
-text = "Gold: 5"
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 10.0
+step = 0.1
+value = 10.0
+show_percentage = false
+
+[node name="EnemyHp" type="ProgressBar" parent="Margin/VBox/Top" unique_id=2060186479 groups=["sellables"]]
+modulate = Color(1, 1, 1, 0.5764706)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"EnemyProgressBar"
+max_value = 10.0
+step = 0.1
+value = 10.0
+fill_mode = 1
+show_percentage = false
 
 [node name="HBox" type="HBoxContainer" parent="Margin/VBox" unique_id=1019830051]
 layout_mode = 2
@@ -102,55 +140,81 @@ tooltip_text = "Theif"
 icon = ExtResource("5_kwghf")
 
 [node name="Label" type="Label" parent="Margin/VBox/HBox/Enemy/CharSelect/VBox" unique_id=1342538437 groups=["sellables"]]
+visible = false
 layout_mode = 2
 theme_type_variation = &"light_label"
 text = "Character Select"
 horizontal_alignment = 1
 
-[node name="Actions" type="Control" parent="Margin/VBox" unique_id=1355950924]
+[node name="Bottom" type="Control" parent="Margin/VBox" unique_id=1355950924]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 1.5
 
-[node name="Instructions" type="Label" parent="Margin/VBox/Actions" unique_id=1985745940 groups=["sellables"]]
+[node name="Instructions" type="Label" parent="Margin/VBox/Bottom" unique_id=1985745940 groups=["sellables"]]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 0
-offset_left = 8.0
-offset_top = 9.0
-offset_right = 239.0
-offset_bottom = 46.0
+offset_left = 2.0
+offset_top = 8.0
+offset_right = 244.0
+offset_bottom = 77.0
 size_flags_horizontal = 6
-theme_type_variation = &"hilighted_label"
+mouse_filter = 1
+theme_override_constants/line_spacing = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_kwghf")
 text = "Arrange"
 vertical_alignment = 1
+autowrap_mode = 3
 
-[node name="Fight" type="Button" parent="Margin/VBox/Actions" unique_id=1787666710 groups=["sellables"]]
-custom_minimum_size = Vector2(96, 0)
+[node name="DropSell" type="PanelContainer" parent="Margin/VBox/Bottom" unique_id=682067384 node_paths=PackedStringArray("gold_label")]
+layout_mode = 0
+offset_left = 477.0
+offset_top = 9.0
+offset_right = 542.0
+offset_bottom = 73.0
+script = ExtResource("6_kwghf")
+gold_label = NodePath("../GoldCell/GoldLabel")
+
+[node name="TextureRect" type="TextureRect" parent="Margin/VBox/Bottom/DropSell" unique_id=1012607707]
+layout_mode = 2
+texture = ExtResource("6_dddf4")
+metadata/_edit_lock_ = true
+
+[node name="Actions" type="HBoxContainer" parent="Margin/VBox/Bottom" unique_id=630652480]
 layout_mode = 0
 offset_left = 256.0
 offset_top = 9.0
-offset_right = 352.0
-offset_bottom = 45.0
+offset_right = 452.0
+offset_bottom = 49.0
+
+[node name="Fight" type="Button" parent="Margin/VBox/Bottom/Actions" unique_id=1787666710 groups=["sellables"]]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
+theme_override_font_sizes/font_size = 24
 text = "Fight"
 
-[node name="Next" type="Button" parent="Margin/VBox/Actions" unique_id=333746616 groups=["sellables"]]
+[node name="Next" type="Button" parent="Margin/VBox/Bottom/Actions" unique_id=333746616 groups=["sellables"]]
 custom_minimum_size = Vector2(96, 0)
-layout_mode = 0
-offset_left = 361.0
-offset_top = 9.0
-offset_right = 457.0
-offset_bottom = 45.0
+layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
 disabled = true
 text = "Next"
 
-[node name="DropSell" type="PanelContainer" parent="Margin/VBox/Actions" unique_id=682067384 groups=["sellables"]]
+[node name="GoldCell" type="PanelContainer" parent="Margin/VBox/Bottom" unique_id=1345705674 groups=["sellables"]]
 layout_mode = 0
-offset_left = 496.0
-offset_top = 9.0
-offset_right = 561.0
-offset_bottom = 49.0
+offset_left = 558.0
+offset_top = 19.0
+offset_right = 619.0
+offset_bottom = 59.0
+
+[node name="GoldLabel" type="Label" parent="Margin/VBox/Bottom/GoldCell" unique_id=222596723]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Gold: 2"
+script = ExtResource("8_apkvq")
 
 [node name="DebugLayer" type="CanvasLayer" parent="." unique_id=1258252165]
 script = ExtResource("3_36vbh")
@@ -172,4 +236,34 @@ grow_vertical = 2
 max_columns = 2
 same_column_width = true
 
+[node name="Score" type="PanelContainer" parent="DebugLayer" unique_id=1723630095]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -90.0
+offset_right = 150.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_apkvq")
+
+[node name="VBox" type="VBoxContainer" parent="DebugLayer/Score" unique_id=1615058396]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="DebugLayer/Score/VBox" unique_id=1672457561 groups=["sellables"]]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+text = "Gold won:"
+
+[node name="Ok" type="Button" parent="DebugLayer/Score/VBox" unique_id=2043066809 groups=["sellables"]]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Collect Gold"
+
+[connection signal="pressed" from="Margin/VBox/Bottom/Actions/Next" to="." method="_on_next_pressed"]
 [connection signal="item_clicked" from="DebugLayer/DebugList" to="DebugLayer" method="_on_debug_list_item_clicked"]

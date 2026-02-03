@@ -1,7 +1,7 @@
 extends RefCounted
 class_name Data
 
-const adjacencies = {
+const adjacencies: = {
 	1: {
 		0: [1,2],
 		1: [3,4],
@@ -73,24 +73,30 @@ const adjacencies = {
 		11: [0],
 	},
 }
+const enemy_loadouts: = {
+	0: {
+		8: "white_flag",
+		10: "archer",
+	},
+}
 const loadouts: = {
 	"knight": {
 		1: "knight", 
-		3: "knife", 
+		#3: "knife", 
 		4: "shield",
 	},
 	"archer": {
-		0: "archer", 
-		3: "white_flag", 
-		4: "white_flag" 
+		1: "archer", 
+		3: "white_flag",
+		#4: "white_flag"
 	},
 	"theif": {
-		3: "knife",
-		4: "theiving_gloves", 
-		5: "theif",
+		#3: "knife",
+		4: "theiving_gloves",
+		1: "theif",
 	},
 }
-static var items = {
+static var items: = {
 	"knife": {
 		"image": load("res://sell_everything/images/knife.png"),
 		"group": "items",
@@ -119,7 +125,7 @@ static var items = {
 		"image": load("res://sell_everything/images/theiving-gloves.png"),
 		"group": "equipment",
 		"passive": {
-			"steals": 1
+			"gold": 1
 		},
 	},
 	"white_flag": {
@@ -154,10 +160,12 @@ static var items = {
 			"range": 3,
 		},
 	},
+	"generic_sellable": {
+		"group": "sellables",
+		"value": 1,
+	},
 }
-static var items_by_group = {}
-static var gold: = 2
-
+static var items_by_group: = {}
 
 static func _static_init() -> void:
 	var dict = {}
@@ -167,14 +175,7 @@ static func _static_init() -> void:
 			dict[group] = []
 		dict[group].append(item)
 	items_by_group = dict
-
-
-static func get_gold():
-	return gold
-
-static func add_gold(amount):
-	gold += amount
-
+	
 
 static func get_tooltip(item_name: String):
 	var data = items[item_name]
@@ -215,8 +216,10 @@ static func rand_by_group(group: String):
 
 
 static func random_item_name():
-	return items.keys().pick_random()
-
+	var item = null
+	while item == null or items[item]["group"] == "sellables":
+		item = items.keys().pick_random()
+	return item
 
 static func get_item(name: String = ""):
 	if name == "":

@@ -6,6 +6,8 @@ extends Control
 @export var next_button: Button
 @export var drop_sell: PanelContainer
 @export var actions: Control
+@export var player_hp_bar: ProgressBar
+@export var enemy_hp_bar: ProgressBar
 
 @onready var debug_layer: CanvasLayer = $DebugLayer
 @onready var player: Control = $Margin/VBox/HBox/Player
@@ -25,28 +27,38 @@ var group_sizes: = {
 }
 var cells: = []
 var active_targets = {}
-# arrange, fight, steal
-var phase: = "character_select":
+var phase: = "":
 	set(v):
 		phase = v
+		instructions.text = "Select character"
 		print("Phase: ", phase)
 		Cell.set_phase(phase)
 		match phase:
 			"character_select":
 				pass
 			"arrange":
+				instructions.text =\
+					"Drag to arrange\nFight when ready"
 				fight_button.disabled = false
 				next_button.disabled = true
 				actions.show()
 				instructions.theme_type_variation = "hilighted_label"
 			"fight":
-				instructions.theme_type_variation = "disabled_label"
-			"steal":
+				instructions.text =\
+					"Fight until it's over"
+			"scoring":
+				pass
+			"shop":
+				instructions.text =\
+					"Drag to board (buy)\nDrag to shop ↓ (sell)"\
+					+"\nNext when ready"
 				fight_button.disabled = true
 				next_button.disabled = false
 
 
 func _ready() -> void:
+	$DebugLayer/Score.hide()
+	phase = "character_select"
 	actions.hide()
 	await get_tree().process_frame
 	cells = player.cells + enemy.cells
@@ -61,6 +73,7 @@ func _ready() -> void:
 	for char_name in char_buttons:
 		var btn = char_buttons[char_name]
 		btn.pressed.connect(start_game)
+		btn.pressed.connect(Globals.play_sfx.bind("click"))
 		btn.mouse_entered.connect(
 			(func(u,c):
 				clear_items(u)
@@ -74,15 +87,14 @@ func _ready() -> void:
 
 
 func on_fight_pressed():
-	match phase:
-		"arrange":
-			phase = "fight"
-			populate_targets()
-			if active_targets.is_empty():
-				end_fight()
-				return
-		"fight":
-			process_next_cell()
+	if phase == "arrange":
+		phase = "fight"
+		populate_targets()
+		if active_targets.is_empty():
+			end_fight()
+			return
+	if phase == "fight":
+		process_next_cell()
 			
 
 func populate_targets():
@@ -111,13 +123,55 @@ func start_game():
 	clear_items(enemy)
 	loadout_random(enemy)
 	phase = "arrange"
+	
+	var player_hp = 0
+	for cell in player.cells:
+		player_hp += cell.hp
+	player_hp_bar.max_value = player_hp
+	player_hp_bar.value = player_hp
+	
+	var enemy_hp = 0
+	for cell in player.cells:
+		enemy_hp += cell.hp
+	enemy_hp_bar.max_value = enemy_hp
+	enemy_hp_bar.value = enemy_hp
 		
 
 func end_fight():
-	phase = "steal"
+	phase = "scoring"
+	
+	var player_hp_lost = player_hp_bar.max_value - player_hp_bar.value
+	var enemy_hp_lost = enemy_hp_bar.max_value - enemy_hp_bar.value
+	var points = []
+	points.append(int(
+		player_hp_lost < enemy_hp_lost))
+	points.append(int(
+		player_hp_lost == 0))
+	points.append(int(
+		current_index < 10))
+	
+	
+	var score_text = str(
+		"Gold won:",
+		"\nBetter Hp: {0}",
+		"\nPerfect Hp: {1}",
+		"\nUnder 10 turns: {2}",
+	).format(points)
+	$DebugLayer/Score/VBox/Label.text = score_text
+	
+	$DebugLayer/Score.show()
+	await $DebugLayer/Score/VBox/Ok.pressed
+	
+	var gold_won = points.reduce(func(a,b): return a+b)
+	Globals.add_gold(gold_won)
+	
+	$DebugLayer/Score.hide()
+	phase = "shop"
 
 
 func _cell_hovered(cell):
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		return
 	if cell.item_name:
 		hovering_cell = cell
 		hilight_cell(cell)
@@ -211,6 +265,11 @@ func process_cell(cell, target):
 	cell.attack_target(target, attack_amount)
 	target.recieve_damage_from(cell, attack_amount)
 	
+	if target.user == "player":
+		player_hp_bar.value -= attack_amount
+	elif target.user == "enemy":
+		enemy_hp_bar.value -= attack_amount
+
 
 func fill_random(node: Node) -> void:
 	for group in group_sizes:
@@ -259,40 +318,8 @@ func _input(event: InputEvent) -> void:
 						loadout[cell.index] = cell.item_name
 
 
-#func get_adjacencies():
-	#var adj = {}
-	#var map_width = 5
-	#
-	#var x_positions = []
-	#for cell in cells:
-		#var x = cell.global_position.x
-		#if x not in x_positions:
-			#x_positions.append(x)
-			#
-	#for range_ in range(1, map_width+1):
-		#adj[range_] = {}
-		#for i in player.cells.size():
-			#var player_cell = player.cells[i]
-			#adj[range_][player_cell.index] = []
-			#var player_rect: Rect2 = Rect2(
-					#player_cell.global_position, player_cell.size)
-					#
-			#var player_rank = x_positions.find(player_cell.global_position.x)
-			#var target_rank = player_rank + range_
-			#if target_rank >= x_positions.size():
-				#continue
-			#var target_rank_x = x_positions[target_rank]
-			#player_rect.position.x = target_rank_x
-			#
-			#for target_cell in cells.filter(func(tc): return tc.global_position.x == target_rank_x):
-				#if player_cell == target_cell:
-					#continue
-				#var target_rect = Rect2(target_cell.global_position, target_cell.size)
-				#if player_rect.intersects(target_rect):
-					#adj[range_][player_cell.index].append(target_cell.index)
-					#
-	#for e_cell in enemy.cells:
-		## project left...
-		#pass
-		#
-	#return adj
+func _on_next_pressed() -> void:
+	if phase == "shop":
+		for cell in cells:
+			cell.revive()
+		start_game()
